@@ -1,0 +1,33 @@
+<header>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #e3f2fd;">
+        <div class="container pl-0">
+            <a class="col-2 navbar-brand" href="#">
+                <h3>OSF Backend</h3>
+            </a>
+        
+            <% for(mainCategory of mainCategories) { %>
+                <button class="col-1 btn btn-outline-danger btn-sm" type="button" style="border-radius: 12px;"><%= mainCategory.name %></button>
+            <% } %>
+
+            
+            
+        </div>
+    </nav>
+     <!-- /navbar -->
+
+     <br>
+     <br>
+     <br>
+    <nav aria-label="breadcrumb">
+        <div class="container pl-0 pt-2">
+            <ol class="breadcrumb bg-light">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Subcategory Name</li>
+            </ol>
+        </div>
+    </nav>
+    
+   
+
+</header>

@@ -1,0 +1,19 @@
+<!-- container -->
+<div class="container">
+
+    <% for(subCategory of subCategories){ %>
+        <h5 class="text-danger"><%= subCategory.name %></h5>
+        <div class="card mb-3 border-left-0 border-right-0 border-top-0" style="border-radius: 2px; border-width:6px; border-color: rgba(0, 0, 0, 0.692);">
+            <img class="card-img-top" src="../../images/<%= subCategory.image %>" alt="Subcategory Image">
+            <div class="card-body pl-0">
+                <p class="card-text"><%= subCategory.page_description %></p>
+                <form action="/category/subcategory/<%= subCategory.id %>/products" method="GET">
+                    <button type="submit" class="btn btn-outline-danger btn-sm mb-2" style="border-radius: 12px;">View Products</button>
+                </form>
+                
+            </div>
+        </div>
+    <% } %>
+
+</div>
+<!-- /container -->

@@ -1,12 +1,21 @@
 const axios =  require('axios');
 
 module.exports = {
-    getMainCategories: async () => {
-        const response = await axios.get("https://backend-academy-osf.herokuapp.com/api/categories/parent/root?secretKey=$2a$08$eaCV.trJKD4tzqmu.XOS/eTAq4CokqUjRRDGvl1Tuall8GFV.upJG")
+    getCategoriesByParentId: async (parentId) => {
+        const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/categories/parent/${parentId}?secretKey=$2a$08$eaCV.trJKD4tzqmu.XOS/eTAq4CokqUjRRDGvl1Tuall8GFV.upJG`)
         return response.data 
     },
-    getCategories: async () => {
-        const response = await axios.get("https://backend-academy-osf.herokuapp.com/api/categories/?secretKey=$2a$08$eaCV.trJKD4tzqmu.XOS/eTAq4CokqUjRRDGvl1Tuall8GFV.upJG")
+    getCategoriesById: async (id) => {
+        const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/categories/${id}?secretKey=$2a$08$eaCV.trJKD4tzqmu.XOS/eTAq4CokqUjRRDGvl1Tuall8GFV.upJG`)
+        return response.data 
+    },
+    getProductsByCategoryId: async (id) => {
+        const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=$2a$08$eaCV.trJKD4tzqmu.XOS/eTAq4CokqUjRRDGvl1Tuall8GFV.upJG&primary_category_id=${id}&page=1`)
+        return response.data 
+    },
+    getProductById: async (id) => {
+        const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=$2a$08$eaCV.trJKD4tzqmu.XOS/eTAq4CokqUjRRDGvl1Tuall8GFV.upJG&_id=${id}`)
         return response.data 
     }
+    
 }

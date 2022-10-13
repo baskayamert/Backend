@@ -28,8 +28,17 @@
     <nav aria-label="breadcrumb">
         <div class="container pl-0 pt-2">
             <ol class="breadcrumb bg-light">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Subcategory Name</li>
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <% if(typeof(selectedCategory) !== 'undefined') { %>
+                    <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>"><%= selectedCategory.name %></a></li>
+                <% } %>
+                <% if(typeof(selectedSubCategory) !== 'undefined') { %>
+                    <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>"><%= selectedSubCategory.name %></a></li>
+                <% } %>
+                <% if(typeof(selectedProduct) !== 'undefined') { %>
+                    <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/product/<%= selectedProduct[0]._id %>"><%= selectedProduct[0].name %></a></li>
+                <% } %>
+                
             </ol>
         </div>
     </nav>

@@ -23,39 +23,73 @@ router.get('/category/:id', function(req, res, next) {
   })
 });
 
-router.get('/category/subcategory/:id', function(req, res, next) {
+router.get('/category/:id/subcategory/:subCategoryId', function(req, res, next) {
   api.getCategoriesByParentId("root").then((categories) => {
+    let selectedCategory;
+    for( e of categories ) {
+      if(e.id === req.params.id){
+        selectedCategory = e
+        break
+      }
+    }
     
-    api.getCategoriesByParentId(req.params.id).then((subCategories) => {
-      res.render('subCategoryById', { title: 'OSF', subCategories: subCategories, categories: categories});
+    api.getCategoriesByParentId(req.params.subCategoryId).then((subCategories) => {
+      res.render('subCategoryById', { title: 'OSF', subCategories: subCategories, categories: categories, selectedCategory: selectedCategory});
     })
   })
 });
 
-router.get('/category/subcategory/:id/products/:page', function(req, res, next) {
+router.get('/category/:id/subcategory/:subCategoryId/products/:page', function(req, res, next) {
   api.getCategoriesByParentId("root").then((categories) => {
-    const productPerPage = 25
-    const page = req.params.page || 1
-    api.getProductsByCategoryId(req.params.id, req.params.page).then((products) => {
-      const productCount = products.length
-      res.render('productsByCategoryId', { 
-        title: 'OSF', 
-        products: products, 
-        categories: categories,
-        current: parseInt(page),
-        currentCategoryId: req.params.id,
-        pages: Math.ceil(productCount/productPerPage)
-      });
+    let selectedCategory;
+    for( e of categories ) {
+      if(e.id === req.params.id){
+        selectedCategory = e
+        break
+      }
+    }
+    api.getCategoriesById(req.params.subCategoryId).then((selectedSubCategory) => {
+      const productPerPage = 25
+      const page = req.params.page || 1
+      api.getProductsByCategoryId(req.params.subCategoryId, req.params.page).then((products) => {
+        const productCount = products.length
+        res.render('productsByCategoryId', { 
+          title: 'OSF', 
+          products: products, 
+          categories: categories,
+          selectedCategory: selectedCategory,
+          selectedSubCategory: selectedSubCategory, 
+          current: parseInt(page),
+          currentCategoryId: req.params.subCategoryId,
+          pages: Math.ceil(productCount/productPerPage)
+        });
+      })
     })
+    
   })
 });
 
-router.get('/product/:id', function(req, res, next) {
+router.get('/category/:id/subcategory/:subCategoryId/product/:productId', function(req, res, next) {
   api.getCategoriesByParentId("root").then((categories) => {
-    api.getProductById(req.params.id).then((product) => {
-      console.log(product[0].name)
-      res.render('productById', { title: 'OSF', product: product, categories: categories});
+    let selectedCategory;
+    for( e of categories ) {
+      if(e.id === req.params.id){
+        selectedCategory = e
+        break
+      }
+    }
+    api.getCategoriesById(req.params.subCategoryId).then((selectedSubCategory) => {
+      api.getProductById(req.params.productId).then((selectedProduct) => {
+        res.render('productById', { 
+          title: 'OSF', 
+          selectedProduct: selectedProduct, 
+          categories: categories, 
+          selectedCategory: selectedCategory,
+          selectedSubCategory: selectedSubCategory
+        });
+      })
     })
+    
   })
 });
 

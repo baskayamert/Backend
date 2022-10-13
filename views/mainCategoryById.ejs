@@ -9,10 +9,11 @@
             <img class="card-img-top" src="../images/<%= subCategory.image %>" alt="Subcategory Image">
             <div class="card-body pl-0">
                 <p class="card-text"><%= subCategory.page_description %></p>
+                
                 <form action="/category/subcategory/<%= subCategory.id %>" method="GET">
                     <button type="submit" class="btn btn-outline-danger btn-sm mb-2" style="border-radius: 12px;">View Subcategories</button>
                 </form>
-                
+                    
             </div>
         </div>
     <% } %>

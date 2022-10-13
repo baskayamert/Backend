@@ -32,10 +32,20 @@ router.get('/category/subcategory/:id', function(req, res, next) {
   })
 });
 
-router.get('/category/subcategory/:id/products', function(req, res, next) {
+router.get('/category/subcategory/:id/products/:page', function(req, res, next) {
   api.getCategoriesByParentId("root").then((categories) => {
-    api.getProductsByCategoryId(req.params.id).then((products) => {
-      res.render('productsByCategoryId', { title: 'OSF', products: products, categories: categories});
+    const productPerPage = 25
+    const page = req.params.page || 1
+    api.getProductsByCategoryId(req.params.id, req.params.page).then((products) => {
+      const productCount = products.length
+      res.render('productsByCategoryId', { 
+        title: 'OSF', 
+        products: products, 
+        categories: categories,
+        current: parseInt(page),
+        currentCategoryId: req.params.id,
+        pages: Math.ceil(productCount/productPerPage)
+      });
     })
   })
 });

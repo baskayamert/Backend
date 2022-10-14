@@ -4,17 +4,24 @@ const expressLayouts = require('express-ejs-layouts')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const dotenv = require('dotenv');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 var app = express();
 
+// setting enverionmental variables
+dotenv.config();
+
 // view engine setup
 app.use(expressLayouts)
-app.set('layout', './layouts/full-width')
-app.set('views', path.join(__dirname, 'views'));
+app.set('layout', './layouts/full-width');
 app.set('view engine', 'ejs');
+
+
+app.set('views', path.join(__dirname, 'views'));
+
 
 app.use(logger('dev'));
 app.use(express.json());

@@ -7,10 +7,10 @@
             </a>
         
       
-            <div class="row justify-content-end">
+            <div class="row justify-content-end mr-0">
                 <% for(category of categories) { %>    
                     <form action="/category/<%= category.id %>" method="GET">
-                        <% if(selectedCategory.id === category.id) { %>  
+                        <% if(typeof(selectedCategory) !== 'undefined' && selectedCategory.id === category.id) { %>  
                             <button type="submit" class="btn btn-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;"><%= category.name %></button>
                         <% } else { %>
                             <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;"><%= category.name %></button>

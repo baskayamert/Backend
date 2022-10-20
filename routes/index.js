@@ -1,14 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const api = require('../api/index.js')
 
-router.get('/home', function(req, res, next) {
+router.get('/home', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
     res.render('index', { title: 'OSF', categories: categories });
-  })
+  }).catch(next)
 });
 
-router.get('/category/:id', function(req, res, next) {
+router.get('/category/:id', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
     let selectedCategory;
     for( e of categories ) {
@@ -18,12 +18,12 @@ router.get('/category/:id', function(req, res, next) {
       }
     }
     api.getCategoriesByParentId(req.params.id).then((subCategories) => {
-      res.render('mainCategoryById', { title: 'OSF', subCategories: subCategories, categories: categories, selectedCategory: selectedCategory });
-    })
-  })
+      res.render('mainCategoryById', { title: selectedCategory.page_title, subCategories: subCategories, categories: categories, selectedCategory: selectedCategory });
+    }).catch(next)
+  }).catch(next)
 });
 
-router.get('/category/:id/subcategory/:subCategoryId', function(req, res, next) {
+router.get('/category/:id/subcategory/:subCategoryId', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
     let selectedCategory;
     for( e of categories ) {
@@ -32,14 +32,15 @@ router.get('/category/:id/subcategory/:subCategoryId', function(req, res, next) 
         break
       }
     }
-    
     api.getCategoriesByParentId(req.params.subCategoryId).then((subCategories) => {
-      res.render('subCategoryById', { title: 'OSF', subCategories: subCategories, categories: categories, selectedCategory: selectedCategory});
-    })
-  })
+      api.getCategoriesById(req.params.subCategoryId).then((selectedSubCategory) => {
+        res.render('subCategoryById', { title: selectedSubCategory.page_title, subCategories: subCategories, categories: categories, selectedCategory: selectedCategory});
+      }).catch(next)
+    }).catch(next)
+  }).catch(next)
 });
 
-router.get('/category/:id/subcategory/:subCategoryId/products/:page', function(req, res, next) {
+router.get('/category/:id/subcategory/:subCategoryId/products/:page', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
     let selectedCategory;
     for( e of categories ) {
@@ -63,12 +64,12 @@ router.get('/category/:id/subcategory/:subCategoryId/products/:page', function(r
           currentCategoryId: req.params.subCategoryId,
           pages: Math.ceil(productCount/productPerPage)
         });
-      })
-    })
-  })
+      }).catch(next)
+    }).catch(next)
+  }).catch(next)
 });
 
-router.get('/category/:id/subcategory/:subCategoryId/product/:productId', function(req, res, next) {
+router.get('/category/:id/subcategory/:subCategoryId/product/:productId', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
     let selectedCategory;
     for( e of categories ) {
@@ -86,10 +87,10 @@ router.get('/category/:id/subcategory/:subCategoryId/product/:productId', functi
           selectedCategory: selectedCategory,
           selectedSubCategory: selectedSubCategory
         });
-      })
-    })
+      }).catch(next)
+    }).catch(next)
     
-  })
+  }).catch(next)
 });
 
 module.exports = router;

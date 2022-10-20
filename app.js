@@ -1,14 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
+const createError = require('http-errors');
+const express = require('express');
 const Sentry = require('@sentry/node');
 const Tracing = require("@sentry/tracing");
 const expressLayouts = require('express-ejs-layouts')
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const dotenv = require('dotenv');
 
-var app = express();
+const app = express();
 
 // Sentry initialization
 Sentry.init({ 
@@ -65,14 +65,9 @@ app.use(function(req, res, next) {
 app.use(Sentry.Handlers.errorHandler());
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render(res.sentry + "\n");
+app.use(function onError(err, req, res, next) {
+  res.statusCode = err.response.status;
+  res.end(res.sentry + "\n")
 });
 
 module.exports = app;

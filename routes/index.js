@@ -65,7 +65,6 @@ router.get('/category/:id/subcategory/:subCategoryId/products/:page', function(r
         });
       })
     })
-    
   })
 });
 

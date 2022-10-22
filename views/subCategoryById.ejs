@@ -1,15 +1,15 @@
 <!-- container -->
 <div class="container">
 
-    <% for(subCategory of subCategories){ %>
-        <h5 class="text-danger"><%= subCategory.name %></h5>
+    <% for(subSubCategory of subSubCategories){ %>
+        <h5 class="text-danger"><%= subSubCategory.name %></h5>
         <div class="card mb-3 border-left-0 border-right-0 border-top-0" style="border-radius: 2px; border-width:6px; border-color: rgba(0, 0, 0, 0.692);">
-            <% if(subCategory.image !== "categories/category_404.png") { %>   
-            <img class="card-img-top" src="../../../images/<%= subCategory.image %>" alt="<%= subCategory.name %>">
+            <% if(subSubCategory.image !== "categories/category_404.png") { %>   
+            <img class="card-img-top" src="../../../images/<%= subSubCategory.image %>" alt="<%= subSubCategory.name %>">
             <% } %>
             <div class="card-body pl-0">
-                <p class="card-text"><%= subCategory.page_description %></p>
-                <form action="/category/<%= selectedCategory.id %>/subcategory/<%= subCategory.id %>/products/1" method="GET">
+                <p class="card-text"><%= subSubCategory.page_description %></p>
+                <form action="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/subsubcategory/<%= subSubCategory.id %>/products/1" method="GET">
                     <button type="submit" class="btn btn-outline-danger btn-sm mb-2" style="border-radius: 12px;">View Products</button>
                 </form>
                 

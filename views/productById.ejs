@@ -4,7 +4,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    <img class="card-img-bottom w-100 h-100" src="../../../../../images/<%= selectedProduct[0].image_groups.filter(obj => obj.view_type === 'large')[0].images[0].link %>" alt="<%= selectedProduct[0].image_groups.filter(obj => obj.view_type === 'large')[0].images[0].alt %>">
+                    <img class="card-img-bottom w-100 h-100" 
+                    src="../../../../../../../images/<%= selectedProduct[0].image_groups.filter(obj => obj.view_type === 'large')[0].images[0].link %>" 
+                    alt="<%= selectedProduct[0].image_groups.filter(obj => obj.view_type === 'large')[0].images[0].alt %>">
                 </div>
                 <div class="col-6">
                     <h5 class=" card-title"><%= selectedProduct[0].name %></h5>

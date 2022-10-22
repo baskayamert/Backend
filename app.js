@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
 const Sentry = require('@sentry/node');
+const expressSession = require('express-session')
 const Tracing = require("@sentry/tracing");
 const expressLayouts = require('express-ejs-layouts')
 const path = require('path');
@@ -35,6 +36,14 @@ app.use(Sentry.Handlers.tracingHandler());
 // setting enverionmental variables
 dotenv.config();
 
+// Express Session
+app.use(expressSession({
+  secret: 'hiddenkeyhiddenkey',
+  resave: 'false',
+  saveUninitialized: true
+}))
+
+
 // view engine setup
 app.use(expressLayouts)
 app.set('layout', './layouts/full-width');
@@ -66,7 +75,7 @@ app.use(Sentry.Handlers.errorHandler());
 
 // error handler
 app.use(function onError(err, req, res, next) {
-  res.statusCode = err.response.status;
+  res.statusCode = 500
   res.end(res.sentry + "\n")
 });
 

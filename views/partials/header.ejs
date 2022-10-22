@@ -39,8 +39,11 @@
                 <% if(typeof(selectedSubCategory) !== 'undefined') { %>
                     <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>"><%= selectedSubCategory.name %></a></li>
                 <% } %>
+                <% if(typeof(selectedSubSubCategory) !== 'undefined') { %>
+                    <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/subsubcategory/<%= selectedSubSubCategory.id %>/products/1"><%= selectedSubSubCategory.name %></a></li>
+                <% } %>
                 <% if(typeof(selectedProduct) !== 'undefined') { %>
-                    <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/product/<%= selectedProduct[0]._id %>"><%= selectedProduct[0].name %></a></li>
+                    <li class="breadcrumb-item"><a href="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/subsubcategory/<%= selectedSubSubCategory.id %>/product/<%= selectedProduct[0]._id %>"><%= selectedProduct[0].name %></a></li>
                 <% } %>
                 
             </ol>

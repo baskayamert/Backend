@@ -6,8 +6,13 @@
                 <h3>OSF Backend</h3>
             </a>
         
-      
+            
             <div class="row justify-content-end mr-0">
+                <% if(displayLogButtons) { %>
+                    <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;" data-toggle="modal" data-target="#signup">Sign Up</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;" data-toggle="modal" data-target="#signin">Sign In</button>
+                <% } %>
+            
                 <% for(category of categories) { %>    
                     <form action="/category/<%= category.id %>" method="GET">
                         <% if(typeof(selectedCategory) !== 'undefined' && selectedCategory.id === category.id) { %>  
@@ -17,6 +22,13 @@
                         <% } %>
                     </form>
                 <% } %>
+                
+                <% if(!displayLogButtons) { %>
+                    <form action="/users/logout" method="GET">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;">Log Out</button>
+                    </form>  
+                <% } %>
+                
             </div>       
     
             

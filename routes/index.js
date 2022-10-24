@@ -31,7 +31,7 @@ router.get('/category/:id/subcategory/:subCategoryId', (req, res, next) => {
   const categories = req.session.categories
   const selectedCategory = req.session.selectedCategory
 
-  if(subCategories && categories && selectedCategory){ // If necessarry data is in local storage
+  if(subCategories && categories && selectedCategory){ // If necessarry data is in cookies
     let selectedSubCategory;
     for (subCategory of subCategories) {
       if (subCategory.id === req.params.subCategoryId) {
@@ -52,7 +52,7 @@ router.get('/category/:id/subcategory/:subCategoryId', (req, res, next) => {
       });
   
     }).catch(next)   
-  } else { // If necessarry data isn't in local storage. Here, API requests are sent to obtain necessarry data.
+  } else { // If necessarry data isn't in cookies. Here, API requests are sent to obtain necessarry data.
     api.getCategoriesByParentId("root").then((categories) => {
       let selectedCategory;
       for(category of categories ) {
@@ -88,7 +88,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
   const selectedCategory = req.session.selectedCategory
   const selectedSubCategory = req.session.selectedSubCategory
   
-  if(categories && selectedCategory && selectedSubCategory){ // If necessarry data is in local storage
+  if(categories && selectedCategory && selectedSubCategory){ // If necessarry data is in cookies
     api.getCategoriesById(req.params.subSubCategoryId).then((selectedSubSubCategory) => {
       req.session.selectedSubSubCategory = selectedSubSubCategory
       const productPerPage = 25
@@ -107,7 +107,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
         });
       }).catch(next)
     }).catch(next)
-  } else { // If necessarry data isn't in local storage. Here, API requests are sent to obtain necessarry data.
+  } else { // If necessarry data isn't in cookies. Here, API requests are sent to obtain necessarry data.
     api.getCategoriesByParentId("root").then((categories) => {
       let selectedCategory;
       for(category of categories ) {
@@ -153,7 +153,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
   const selectedSubSubCategory = req.session.selectedSubSubCategory
   const selectedSubCategory = req.session.selectedSubCategory
 
-  if(categories && selectedCategory && selectedSubCategory && selectedSubSubCategory){ // If necessarry data is in local storage
+  if(categories && selectedCategory && selectedSubCategory && selectedSubSubCategory){ // If necessarry data is in cookies
     api.getProductById(req.params.productId).then((selectedProduct) => {
       res.render('productById', {
         title: 'OSF',
@@ -164,7 +164,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
         selectedSubCategory: selectedSubCategory
       });
     }).catch(next)
-  } else { // If necessarry data isn't in local storage. Here, API requests are sent to obtain necessarry data.
+  } else { // If necessarry data isn't in cookies. Here, API requests are sent to obtain necessarry data.
     api.getCategoriesByParentId("root").then((categories) => {
       let selectedCategory;
       for(category of categories ) {

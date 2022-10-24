@@ -8,7 +8,7 @@ dotenv.config();
 chai.use(chaiHttp);
 
 // API Tests
-describe('API TEST WITHOUT LOCAL STORAGE', () => {
+describe('API TEST WITHOUT COOKIES', () => {
     describe('GET /home', () => {
         it('Gets main categories', (done) => {
             chai.request(`http://localhost:${process.env.PORT}`).get('/home').end((err, res) => {

@@ -49,7 +49,6 @@ app.use(expressLayouts)
 app.set('layout', './layouts/full-width');
 app.set('view engine', 'ejs');
 
-
 app.set('views', path.join(__dirname, 'views'));
 
 
@@ -58,6 +57,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// The middleware which determines what is shown to users
+app.use((req, res, next) => {
+  const user = req.session.user
+  if(user) {
+      res.locals = {
+          displayLogButtons: false
+      }
+  } else {
+      res.locals = {
+        displayLogButtons: true
+      }
+  }
+  next()
+})
+
+// Flash Message Middleware
+app.use((req, res, next) => {
+  res.locals.sessionFlash = req.session.sessionFlash
+  delete req.session.sessionFlash
+  next()
+})
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');

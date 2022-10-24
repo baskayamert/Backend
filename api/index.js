@@ -16,6 +16,14 @@ module.exports = {
     getProductById: async (id) => {
         const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&_id=${id}`)
         return response.data 
+    },
+    signUp: async (newUser) => {
+        const response = await axios.post(`https://backend-academy-osf.herokuapp.com/api/auth/signup`, newUser)
+        return response.data
+    },
+    signUp: async (loggedInUser) => {
+        const response = await axios.post(`https://backend-academy-osf.herokuapp.com/api/auth/signin`, loggedInUser)
+        return response.data
     }
     
 }

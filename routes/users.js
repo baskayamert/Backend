@@ -28,6 +28,7 @@ router.post('/signin', (req, res, next) => {
         message: 'User cannot be found!'
       }
       res.redirect('/home')
+  
     }
   })
 })

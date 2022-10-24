@@ -23,6 +23,11 @@
             </div>
             <div class="my-3" style="text-align: center;">
               <button type="submit" class="btn btn-success btn-lg my-3" style="width: 420px;" data-toggle="modal" data-target="#signin">Login</button>
+              <% if(sessionFlash) { %>
+                <div class="<%= sessionFlash.type %>" role="alert">
+                  <%= sessionFlash.message %>
+                </div>
+              <% } %>
               <small id="signUpHelp" class="form-text text-muted">Not registered? <a style="color: green; cursor:pointer;" data-dismiss="modal" data-toggle="modal" data-target="#signup">Create an account</a></small>
             </div>
             

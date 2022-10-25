@@ -11,18 +11,21 @@ router.post('/signup', (req, res, next) => {
   }
   api.signUp(newUser).then((data) => {
     res.redirect('/home')
-  }).catch(next)
+  }).catch((err) => {
+    console.log(err)
+  })
 })
 
 router.post('/signin', (req, res, next) => {
-  const newUser = {
+  const userInfo = {
     secretKey: process.env.API_KEY,
     ...req.body
   }
-  api.signUp(newUser).then((user) => {
+  api.signIn(userInfo).then((user) => {
     req.session.user = user
     res.redirect('/home')
   }).catch((err) => {
+    console.log(err)
     if(err.response.status === 400){
       req.session.sessionFlash = {
         type: 'alert alert-danger',
@@ -44,16 +47,20 @@ router.get('/cart', (req, res, next) => {
   const categories = req.session.categories
 
   api.getCart(jwt).then((cart) => {
-    console.log(cart)
+    //console.log(cart)
 
     api.getCartItems(cart.items).then((products) =>{
       for(product of products){
         for(item of cart.items){
-          if(item.productId === product.id) {
-            console.log(product)
+          if(item.productId === product[0].id) {
+            product[0] = {
+              ...product[0],
+              item
+            }
           }
         }
       }
+      console.log(products)
       res.render('cart', {
         categories: categories,
         cart: cart,

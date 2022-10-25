@@ -30,7 +30,7 @@ module.exports = {
         const response = await axios.post(`https://backend-academy-osf.herokuapp.com/api/auth/signup`, newUser)
         return response.data
     },
-    signUp: async (loggedInUser) => {
+    signIn: async (loggedInUser) => {
         const response = await axios.post(`https://backend-academy-osf.herokuapp.com/api/auth/signin`, loggedInUser)
         return response.data
     },

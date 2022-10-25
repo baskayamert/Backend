@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const Sentry = require('@sentry/node');
 const expressSession = require('express-session')
+const methodOvverride = require('method-override')
 const Tracing = require("@sentry/tracing");
 const expressLayouts = require('express-ejs-layouts')
 const path = require('path');
@@ -56,7 +57,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(methodOvverride('_method'))
 
 // The middleware which determines what is shown to users
 app.use((req, res, next) => {

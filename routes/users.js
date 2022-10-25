@@ -64,7 +64,6 @@ router.get('/cart', (req, res, next) => {
           }
         }
       }
-    
       res.render('cart', {
         title: "The Shopping Cart",
         categories: categories,
@@ -83,8 +82,21 @@ router.post('/cart/addItem', (req, res, next) => {
     ...req.body
   }
   api.addItemToCart(jwt, product).then((product) => {
-    console.log(product)
     res.redirect('/home')
+  })
+})
+
+router.delete('/cart/removeItem', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const product = {
+    secretKey: process.env.API_KEY,
+    productId: req.body.productId,
+    variantId: req.body.variantId  
+  }
+  api.removeItemFromCart(jwt, product).then((product) => {
+    res.redirect('/users/cart')
+  }).catch((err) => {
+    //console.log(err)
   })
 })
 

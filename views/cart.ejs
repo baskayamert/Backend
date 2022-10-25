@@ -46,7 +46,10 @@
                                 </form>
                             </div>
                             <div class="col-2 text-right">
-                                <form action="" method="POST">
+                                <form action="/users/cart/removeItem?_method=DELETE" method="POST">
+                                    <input type="hidden" name="productId" value="<%= product.id %>">
+                                    <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
+                                    <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-outline-danger btn-sm h-100" style="border-radius: 12px;">Delete</button>
                                 </form>
                             </div>

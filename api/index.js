@@ -1,4 +1,5 @@
 const axios =  require('axios');
+const { response } = require('../app');
 
 module.exports = {
     getCategoriesByParentId: async (parentId) => {
@@ -52,6 +53,18 @@ module.exports = {
 
         const response = await axiosRequest.post(`https://backend-academy-osf.herokuapp.com/api/cart/addItem`, product)
         return response.data
+    },
+    removeItemFromCart: async (jwt, product) => {
+        const url = 'https://backend-academy-osf.herokuapp.com/api/cart/removeItem'
+        const config = {
+          headers: { Authorization: jwt },
+          url,
+          method: 'DELETE',
+          data: product
+        }
+        
+        const response = await axios(config)     
+        return response.data   
     }
     
 }

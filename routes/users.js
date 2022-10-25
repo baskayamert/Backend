@@ -42,11 +42,24 @@ router.get('/logout', (req, res, next) => {
 router.get('/cart', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
   const categories = req.session.categories
-  console.log(req.session)
+
   api.getCart(jwt).then((cart) => {
-    //console.log(cart.items[0].variant)
-    res.render('cart', {
-      categories: categories
+    console.log(cart)
+
+    api.getCartItems(cart.items).then((products) =>{
+      for(product of products){
+        for(item of cart.items){
+          if(item.productId === product.id) {
+            console.log(product)
+          }
+        }
+      }
+      res.render('cart', {
+        categories: categories,
+        cart: cart,
+        products: products,
+        url: req.url
+      })
     })
   })
 })

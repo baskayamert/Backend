@@ -19,7 +19,7 @@
                                             <p class="card-text">Price: $ <%= product.price.toFixed(2) %></p>
                                         </div>
                                         <div>
-                                            <form action="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/subsubcategory/<%= selectedSubSubCategory.id %>/product/<%= product._id %>" method="GET">
+                                            <form action="/category/<%= selectedCategory.id %>/subcategory/<%= selectedSubCategory.id %>/subsubcategory/<%= selectedSubSubCategory.id %>/product/<%= product.id %>" method="GET">
                                                 <button type="submit" class="btn btn-outline-danger btn-sm h-100" style="border-radius: 12px;">More Info</button>
                                             </form>
                                         </div>

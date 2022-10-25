@@ -41,20 +41,24 @@ router.get('/logout', (req, res, next) => {
 
 router.get('/cart', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
-  console.log(jwt)
+  const categories = req.session.categories
+  console.log(req.session)
   api.getCart(jwt).then((cart) => {
-    console.log(cart)
-    res.redirect('/home')
+    //console.log(cart.items[0].variant)
+    res.render('cart', {
+      categories: categories
+    })
   })
 })
 
 router.post('/cart/addItem', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
   const product = {
+    secretKey: process.env.API_KEY,
     ...req.body
   }
-  api.addItemToCart(jwt, product).then((data) => {
-    console.log(data)
+  api.addItemToCart(jwt, product).then((product) => {
+    console.log(product)
     res.redirect('/home')
   })
 })

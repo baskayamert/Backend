@@ -4,6 +4,7 @@ const api = require('../api/index.js')
 
 router.get('/home', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
+    req.session.categories = categories
     res.render('index', { title: 'OSF', categories: categories });
   }).catch(next)
 });
@@ -17,7 +18,6 @@ router.get('/category/:id', (req, res, next) => {
         break
       }
     }
-    req.session.categories = categories
     req.session.selectedCategory = selectedCategory
     api.getCategoriesByParentId(req.params.id).then((subCategories) => {
       req.session.subCategories = subCategories
@@ -155,13 +155,21 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
 
   if(categories && selectedCategory && selectedSubCategory && selectedSubSubCategory){ // If necessarry data is in cookies
     api.getProductById(req.params.productId).then((selectedProduct) => {
+
+      if(!res.locals.selectedProductVariants) res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+      const filterAttributes = res.locals.selectedProductVariants
+
+      const productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       
+        if(JSON.stringify(filterAttributes) === JSON.stringify(obj.variation_values)) return obj
+      })
       res.render('productById', {
         title: 'OSF',
         selectedProduct: selectedProduct,
         categories: categories,
         selectedCategory: selectedCategory,
         selectedSubSubCategory: selectedSubSubCategory,
-        selectedSubCategory: selectedSubCategory
+        selectedSubCategory: selectedSubCategory,
+        productWithChosenAttributes: productWithChosenAttributes
       });
     }).catch(next)
   } else { // If necessarry data isn't in cookies. Here, API requests are sent to obtain necessarry data.
@@ -185,13 +193,22 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
           req.session.selectedSubSubCategory = selectedSubSubCategory
           
           api.getProductById(req.params.productId).then((selectedProduct) => {
+
+            if(!res.locals.selectedProductVariants) res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+            const filterAttributes = res.locals.selectedProductVariants
+
+            const productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       
+              if(JSON.stringify(filterAttributes) === JSON.stringify(obj.variation_values)) return obj
+            })
+
             res.render('productById', { 
               title: 'OSF',
               selectedProduct: selectedProduct,
               categories: categories,
               selectedCategory: selectedCategory,
               selectedSubSubCategory: selectedSubSubCategory,
-              selectedSubCategory: selectedSubCategory
+              selectedSubCategory: selectedSubCategory,
+              productWithChosenAttributes: productWithChosenAttributes
             });
           }).catch(next)
         }).catch(next)
@@ -205,6 +222,7 @@ router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCate
     ...req.session.selectedProductVariants,
     ...req.body
   }
+
   res.redirect(`/category/${req.params.id}/subcategory/${req.params.subCategoryId}/subsubcategory/${req.params.subSubCategoryId}/product/${req.params.productId}`)
 });
 

@@ -24,6 +24,25 @@ module.exports = {
     signUp: async (loggedInUser) => {
         const response = await axios.post(`https://backend-academy-osf.herokuapp.com/api/auth/signin`, loggedInUser)
         return response.data
+    },
+    getCart: async (jwt) => {
+        let axiosRequest = axios.create({
+            headers: {
+                Authorization: jwt
+            }
+        })
+        const response = await axiosRequest.get(`https://backend-academy-osf.herokuapp.com/api/cart?secretKey=${process.env.API_KEY}`)
+        return response.data
+    },
+    addItemToCart: async (jwt, product) => {
+        let axiosRequest = axios.create({
+            headers: {
+                Authorization: jwt
+            }
+        })
+
+        const response = await axiosRequest.post(`https://backend-academy-osf.herokuapp.com/api/cart?secretKey=${process.env.API_KEY}`, product)
+        return response.data
     }
     
 }

@@ -73,10 +73,13 @@ app.use((req, res, next) => {
   next()
 })
 
-// Flash Message Middleware
+// Cookies Middleware
 app.use((req, res, next) => {
+  //Flash Message
   res.locals.sessionFlash = req.session.sessionFlash
   delete req.session.sessionFlash
+  //Product Variation
+  res.locals.selectedProductVariants = req.session.selectedProductVariants
   next()
 })
 

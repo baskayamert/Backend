@@ -200,4 +200,12 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
   }
 });
 
+router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCategoryId/product/:productId', (req, res, next) => {
+  req.session.selectedProductVariants = {
+    ...req.session.selectedProductVariants,
+    ...req.body
+  }
+  res.redirect(`/category/${req.params.id}/subcategory/${req.params.subCategoryId}/subsubcategory/${req.params.subSubCategoryId}/product/${req.params.productId}`)
+});
+
 module.exports = router;

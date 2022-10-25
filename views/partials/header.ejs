@@ -24,10 +24,17 @@
                 <% } %>
                 
                 <% if(!displayLogButtons) { %>
+
+                    <a href="users/cart"><img style="margin-left:100px; width: 30px;" src="/images/shoppingCart.svg" alt="Shopping Cart" style="width: 30px; height:30px;"></a>
+
                     <form action="/users/logout" method="GET">
                         <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;">Log Out</button>
                     </form>  
+
+                    
                 <% } %>
+
+                
                 
             </div>       
     

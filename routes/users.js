@@ -47,24 +47,29 @@ router.get('/cart', (req, res, next) => {
   const categories = req.session.categories
 
   api.getCart(jwt).then((cart) => {
-    //console.log(cart)
-
     api.getCartItems(cart.items).then((products) =>{
+      let productsWithDesiredAttributes = []
       for(product of products){
         for(item of cart.items){
           if(item.productId === product[0].id) {
-            product[0] = {
-              ...product[0],
-              item
-            }
+            productsWithDesiredAttributes.push({
+              name: product[0].page_title,
+              page_title: product[0].page_title,
+              short_description: product[0].short_description,
+              image_groups: product[0].image_groups,
+              id: item.productId,
+              variant: item.variant,
+              currency: product[0].currency
+            })
           }
         }
       }
-      console.log(products)
+    
       res.render('cart', {
+        title: "The Shopping Cart",
         categories: categories,
         cart: cart,
-        products: products,
+        products: productsWithDesiredAttributes,
         url: req.url
       })
     })

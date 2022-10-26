@@ -1,5 +1,4 @@
 const axios =  require('axios');
-const { response } = require('../app');
 
 module.exports = {
     getCategoriesByParentId: async (parentId) => {
@@ -63,7 +62,7 @@ module.exports = {
           data: product
         }
         
-        const response = await axios(config)     
+        const response = await axios(config)    
         return response.data   
     }
     

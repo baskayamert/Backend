@@ -165,14 +165,13 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
     api.getProductById(req.params.productId).then((selectedProduct) => {
       let productWithChosenAttributes = undefined
       if(selectedProduct[0].variants.length > 0){
-        if(!res.locals.selectedProductVariants) res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
-        const filterAttributes = res.locals.selectedProductVariants
+        if(!req.session.selectedProductVariants) req.session.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+        const filterAttributes = req.session.selectedProductVariants
   
         productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       
           if(JSON.stringify(filterAttributes) === JSON.stringify(obj.variation_values)) return obj
         })  
       }
-      
       res.render('productById', {
         title: 'OSF',
         selectedProduct: selectedProduct,
@@ -205,12 +204,11 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
           req.session.selectedSubSubCategory = selectedSubSubCategory
           
           api.getProductById(req.params.productId).then((selectedProduct) => {
-      
             let productWithChosenAttributes = undefined
             if(selectedProduct[0].variants.length > 0){
-              if(!res.locals.selectedProductVariants) res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
-              const filterAttributes = res.locals.selectedProductVariants
-        
+              if(!req.session.selectedProductVariants) req.session.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+              const filterAttributes = req.session.selectedProductVariants
+              
               productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       
                 if(JSON.stringify(filterAttributes) === JSON.stringify(obj.variation_values)) return obj
               })  

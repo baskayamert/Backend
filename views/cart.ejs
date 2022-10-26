@@ -3,62 +3,80 @@
 </div>
 
 <div class="container">
-    <% for(product of products) { %>
-    <div class="col-9">
-        <button type="button" class="col-12 btn btn-outline-dark" style="border-radius: 12px;">
-            <div class="row mt-2">
-                <h5 class="col text-left"><%= product.name %></h5>
-                <h5 class="col text-right">Price: <%= product.variant.price.toFixed(2) %>$</h5>
-            </div>    
-        </button>
+    <div class="card text-center" style="width: 18rem; position:absolute; right: 350px;">
+        <div class="card-body">
+          <h5 class="card-title">Your Cart Total:</h5>
+          <p class="card-text"><%= totalCost.toFixed(2) %> $</p>
+          <a href="#" class="btn btn-outline-success" style="border-radius: 12px;">Buy Now</a>
+        </div>
     </div>
-    <div class="col-9 mb-5">
-        <div class="card mt-5 border">
-            <div class="card-body">
-                <div class="row">
-                    <h5 class="pl-3 card-title text-left"><%= product.name %></h5>
-                    <h5 class="col card-title text-right">Price: <%= product.variant.price.toFixed(2) %>$</h5>
+    <% for(product of products) { %>
+        <div class="col-9">
+            <button type="button" class="col-12 btn btn-outline-dark" style="border-radius: 12px;">
+                <div class="row mt-2">
+                    <h5 class="col text-left">
+                        <%= product.name %>
+                    </h5>
+                    <h5 class="col text-right">Price: <%= product.variant.price.toFixed(2) %>$</h5>
                 </div>
-                
-                <div class="row mt-5">
-                    <!-- image -->
-                    <div class="col-4">
-                        <img class="card-img-bottom w-100 h-100" 
-                        src="../../images/<%= product.image_groups.filter(obj => obj.view_type === 'medium')[0].images[0].link %>" 
-                        alt="<%= product.image_groups.filter(obj => obj.view_type === 'medium')[0].images[0].alt %>">
+            </button>
+        </div>
+        <div class="col-9 mb-5">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <div class="row">
+                        <h5 class="pl-3 card-title text-left">
+                            <%= product.name %>
+                        </h5>
+                        <h5 class="col card-title text-right">Price: <%= product.variant.price.toFixed(2) %>$</h5>
                     </div>
-                    <!-- /image -->
-                    <div class="col-8 pr-0 my-auto">
-                        <div class="row">
-                            <p class="col-8 card-text"><%= product.short_description %></p>
-                            <div class="col card-text">
-                                <% for(let [key, value] of Object.entries(product.variant.variation_values)) { %>
-                                    <p><%= key %>: <%= value %></p>
-                                <% } %>
-                            </div>
+
+                    <div class="row mt-5">
+                        <!-- image -->
+                        <div class="col-4">
+                            <img class="card-img-bottom w-100 h-100"
+                                src="../../images/<%= product.image_groups.filter(obj => obj.view_type === 'medium')[0].images[0].link %>"
+                                alt="<%= product.image_groups.filter(obj => obj.view_type === 'medium')[0].images[0].alt %>">
                         </div>
-                        <!-- ColumnOfButtons -->
-                        <div class="row mx-0">
-                            <div class="col"></div>
-                            <div class="col-2 text-right">
-                                <form action="" method="GET">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm h-100" style="border-radius: 12px;">More Info</button>
-                                </form>
+                        <!-- /image -->
+                        <div class="col-8 pr-0 my-auto">
+                            <div class="row">
+                                <p class="col-8 card-text">
+                                    <%= product.short_description %>
+                                </p>
+                                <div class="col card-text">
+                                    <% for(let [key, value] of Object.entries(product.variant.variation_values)) { %>
+                                        <p>
+                                            <%= key %>: <%= value %>
+                                        </p>
+                                        <% } %>
+                                </div>
                             </div>
-                            <div class="col-2 text-right">
-                                <form action="/users/cart/removeItem?_method=DELETE" method="POST">
-                                    <input type="hidden" name="productId" value="<%= product.id %>">
-                                    <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm h-100" style="border-radius: 12px;">Delete</button>
-                                </form>
+                            <!-- ColumnOfButtons -->
+                            <div class="row mx-0">
+                                <div class="col"></div>
+                                <div class="col-2 text-right">
+                                    <form action="/users/cart/product/<%= product.id %>" method="GET">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm h-100"
+                                            style="border-radius: 12px;">More Info</button>
+                                    </form>
+                                </div>
+                                <div class="col-2 text-right">
+                                    <form action="/users/cart/removeItem?_method=DELETE" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm h-100"
+                                            style="border-radius: 12px;">Delete</button>
+                                    </form>
+                                </div>
                             </div>
+                            <!-- /ColumnOfButtons -->
                         </div>
-                        <!-- /ColumnOfButtons -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <% } %>
+    
 </div>

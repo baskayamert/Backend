@@ -1,0 +1,61 @@
+<div class="container">
+
+    <div class="card border-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <img class="card-img-bottom w-100 h-100" 
+                    src="../../../images/<%= selectedProduct[0].image_groups.filter(obj => obj.view_type === 'large')[0].images[0].link %>" 
+                    alt="<%= selectedProduct[0].image_groups.filter(obj => obj.view_type === 'large')[0].images[0].alt %>">
+                </div>
+                <div class="col-6 my-auto">
+                    <h5 class=" card-title"><%= selectedProduct[0].name %></h5>
+                    <p class="card-text"><%- selectedProduct[0].long_description %></p>
+                    <div class="row">
+                        <div class="col">    
+                            <button class="btn btn-outline-danger btn-sm" type="button" style="border-radius: 12px;">Buy Now</button>  
+                        </div>
+                        
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-7 text-right">
+                                    <p class="card-text">Price: <%= selectedProduct[0].price.toFixed(2) %></p>
+                                </div>
+                                <div>
+                                    <div class="input-group">
+                                        <select class="custom-select pt-0" style="height: 30px;" id="inputGroupSelect04">
+                                          <option selected><%= selectedProduct[0].currency %></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                          
+                      
+                    </div>
+                    <% if(typeof(productWithChosenAttributes) !== 'undefined') { %>
+                        <div class="mt-3">
+                            <h5 class="text-center">Product Variants:</h5>
+                            <% for(attribute of selectedProduct[0].variation_attributes) { %>     
+                                <p class="mt-4"><%= attribute.name %>:</p>
+                                <div class="row mx-0">
+                                    <% for(value of attribute.values) { %>
+                                        <form action="/users/cart/product/<%= selectedProduct[0].id %>" method="POST">
+                                            <input type="hidden" name="<%= attribute.id %>" value="<%= value.value %>">
+                                            <% if(typeof(selectedProductVariants) !== 'undefined' && selectedProductVariants.hasOwnProperty(attribute.id) && selectedProductVariants[attribute.id] === value.value) { %>
+                                                <button type="submit" class="btn btn-secondary mt-1" style="width: 100px; color: white;"><%= value.name %></button>             
+                                            <% } else { %>
+                                                <button type="submit" class="btn btn-outline-secondary mt-1" style="width: 100px;"><%= value.name %></button>
+                                            <% } %>
+                                        </form>  
+                                    <% } %>
+                                </div>
+                            <% } %>
+
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

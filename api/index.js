@@ -10,8 +10,14 @@ module.exports = {
         return response.data 
     },
     getProductsByCategoryId: async (id, page) => {
-        const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&primary_category_id=${id}&page=${page}`)
-        return response.data 
+        try {
+            const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&primary_category_id=${id}&page=${page}`)
+            return response.data 
+        }catch(err){
+            return undefined
+        }
+        
+        
     },
     getProductById: async (id) => {
         const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&id=${id}`)

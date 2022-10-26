@@ -96,10 +96,19 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
   
   if(categories && selectedCategory && selectedSubCategory){ // If necessarry data is in cookies
     api.getCategoriesById(req.params.subSubCategoryId).then((selectedSubSubCategory) => {
+      
       req.session.selectedSubSubCategory = selectedSubSubCategory
       const productPerPage = 25
       const page = req.params.page || 1
       api.getProductsByCategoryId(req.params.subSubCategoryId, req.params.page).then((products) => {
+        if(products === undefined) {
+          res.render('error', {
+            title: 'OSF',
+            categories: categories,
+            selectedCategory: selectedCategory,
+            url: req.url
+          })
+        }
         const productCount = products.length
         res.render('productsByCategoryId', {
           title: 'OSF',
@@ -136,6 +145,14 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
           const productPerPage = 25
           const page = req.params.page || 1
           api.getProductsByCategoryId(req.params.subSubCategoryId, req.params.page).then((products) => {
+            if(products === undefined) {
+              res.render('error', {
+                title: 'OSF',
+                categories: categories,
+                selectedCategory: selectedCategory,
+                url: req.url
+              })
+            }
             const productCount = products.length
             res.render('productsByCategoryId', { 
               title: 'OSF',
@@ -165,9 +182,15 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
     api.getProductById(req.params.productId).then((selectedProduct) => {
       let productWithChosenAttributes = undefined
       if(selectedProduct[0].variants.length > 0){
-        if(!req.session.selectedProductVariants) req.session.selectedProductVariants = selectedProduct[0].variants[0].variation_values
-        const filterAttributes = req.session.selectedProductVariants
-  
+          
+        res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+        res.locals.selectedProductVariants = {
+          ...res.locals.selectedProductVariants,
+          ...req.session.selectedProductVariants
+        } 
+
+        const filterAttributes = res.locals.selectedProductVariants
+
         productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       
           if(JSON.stringify(filterAttributes) === JSON.stringify(obj.variation_values)) return obj
         })  
@@ -206,14 +229,17 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
           api.getProductById(req.params.productId).then((selectedProduct) => {
             let productWithChosenAttributes = undefined
             if(selectedProduct[0].variants.length > 0){
-              if(!req.session.selectedProductVariants) req.session.selectedProductVariants = selectedProduct[0].variants[0].variation_values
-              const filterAttributes = req.session.selectedProductVariants
-              
+              res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+              res.locals.selectedProductVariants = {
+                ...res.locals.selectedProductVariants,
+                ...req.session.selectedProductVariants
+              } 
+              const filterAttributes = res.locals.selectedProductVariants
+               
               productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       
                 if(JSON.stringify(filterAttributes) === JSON.stringify(obj.variation_values)) return obj
               })  
-            }           
-
+            }         
             res.render('productById', { 
               title: 'OSF',
               selectedProduct: selectedProduct,

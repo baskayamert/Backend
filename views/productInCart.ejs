@@ -43,9 +43,9 @@
                                         <form action="/users/cart/product/<%= selectedProduct[0].id %>" method="POST">
                                             <input type="hidden" name="<%= attribute.id %>" value="<%= value.value %>">
                                             <% if(typeof(selectedProductVariants) !== 'undefined' && selectedProductVariants.hasOwnProperty(attribute.id) && selectedProductVariants[attribute.id] === value.value) { %>
-                                                <button type="submit" class="btn btn-secondary mt-1" style="width: 100px; color: white;"><%= value.name %></button>             
+                                                <button type="submit" class="btn btn-secondary mt-1 pl-4 pr-4 mr-2" style="color: white;"><%= value.name %></button>              
                                             <% } else { %>
-                                                <button type="submit" class="btn btn-outline-secondary mt-1" style="width: 100px;"><%= value.name %></button>
+                                                <button type="submit" class="btn btn-outline-secondary mt-1 pl-4 pr-4 mr-2" ><%= value.name %></button>
                                             <% } %>
                                         </form>  
                                     <% } %>

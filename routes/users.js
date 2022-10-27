@@ -111,9 +111,19 @@ router.delete('/cart/removeItem', (req, res, next) => {
 router.get('/cart/product/:productId', (req, res, next) => {
   const categories = req.session.categories
   api.getProductById(req.params.productId).then((selectedProduct) => {
+
+    if(JSON.stringify(selectedProduct) !== JSON.stringify(req.session.selectedProduct)) delete req.session.selectedProductVariants
+
+    req.session.selectedProduct = selectedProduct
+
     let productWithChosenAttributes = undefined
       if(selectedProduct[0].variants.length > 0){
-        if(!req.session.selectedProductVariants) req.session.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+        res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
+        res.locals.selectedProductVariants = {
+          ...res.locals.selectedProductVariants,
+          ...req.session.selectedProductVariants
+        }
+
         const filterAttributes = req.session.selectedProductVariants
   
         productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       

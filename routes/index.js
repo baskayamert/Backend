@@ -180,6 +180,11 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
 
   if(categories && selectedCategory && selectedSubCategory && selectedSubSubCategory){ // If necessarry data is in cookies
     api.getProductById(req.params.productId).then((selectedProduct) => {
+
+      if(JSON.stringify(selectedProduct) !== JSON.stringify(req.session.selectedProduct)) delete req.session.selectedProductVariants
+
+      req.session.selectedProduct = selectedProduct
+
       let productWithChosenAttributes = undefined
       if(selectedProduct[0].variants.length > 0){
           
@@ -187,7 +192,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
         res.locals.selectedProductVariants = {
           ...res.locals.selectedProductVariants,
           ...req.session.selectedProductVariants
-        } 
+        }
 
         const filterAttributes = res.locals.selectedProductVariants
 
@@ -227,6 +232,9 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
           req.session.selectedSubSubCategory = selectedSubSubCategory
           
           api.getProductById(req.params.productId).then((selectedProduct) => {
+
+            if(JSON.stringify(selectedProduct) !== JSON.stringify(req.session.selectedProduct)) delete req.session.selectedProductVariants
+
             let productWithChosenAttributes = undefined
             if(selectedProduct[0].variants.length > 0){
               res.locals.selectedProductVariants = selectedProduct[0].variants[0].variation_values
@@ -234,6 +242,9 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
                 ...res.locals.selectedProductVariants,
                 ...req.session.selectedProductVariants
               } 
+
+              delete req.session.selectedProductVariants
+
               const filterAttributes = res.locals.selectedProductVariants
                
               productWithChosenAttributes = selectedProduct[0].variants.filter((obj) => {       

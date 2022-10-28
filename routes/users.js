@@ -23,7 +23,7 @@ router.post('/signin', (req, res, next) => {
   }
   api.signIn(userInfo).then((user) => {
     req.session.user = user
-    res.redirect('/home')
+    res.redirect(req.get('referer'))
   }).catch((err) => {
     console.log(err)
     if(err.response.status === 400){
@@ -31,7 +31,7 @@ router.post('/signin', (req, res, next) => {
         type: 'alert alert-danger',
         message: 'User cannot be found!'
       }
-      res.redirect('/home')
+      res.redirect(req.get('referer'))
   
     }
   })
@@ -83,12 +83,13 @@ router.get('/cart', (req, res, next) => {
 
 router.post('/cart/addItem', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
+  console.log(req.body)
   const product = {
     secretKey: process.env.API_KEY,
     ...req.body
   }
   api.addItemToCart(jwt, product).then((product) => {
-    res.redirect('/home')
+    res.redirect(req.get('referer'))
   }).catch((err) => {
     console.log(err)
   })

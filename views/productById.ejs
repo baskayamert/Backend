@@ -15,13 +15,14 @@
                         <div class="col">
                             <div class="row mx-0"> 
                                 <button class="btn btn-outline-danger btn-sm" type="button" style="border-radius: 12px;">Buy Now</button>
-                                    
-                                <form action="/users/cart/addItem" method="POST">
-                                    <input type="hidden" name="productId" value="<%= selectedProduct[0].id %>">
-                                    <input type="hidden" name="variantId" value="<%= (typeof(productWithChosenAttributes) !== 'undefined' && productWithChosenAttributes.length > 0)  ? productWithChosenAttributes[0].product_id : '' %>">
-                                    <input type="hidden" name="quantity" value="1"> 
-                                    <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Add to Cart</button>
-                                </form>
+                                 <% if(user) { %>   
+                                    <form action="/users/cart/addItem" method="POST">
+                                        <input type="hidden" name="productId" value="<%= selectedProduct[0].id %>">
+                                        <input type="hidden" name="variantId" value="<%= (typeof(productWithChosenAttributes) !== 'undefined' && productWithChosenAttributes.length > 0)  ? productWithChosenAttributes[0].product_id : 0 %>">
+                                        <input type="hidden" name="quantity" value="1"> 
+                                        <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Add to Cart</button>
+                                    </form>
+                                <% } %>
                             </div>
                         </div>
                             
@@ -40,7 +41,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <% if(typeof(productWithChosenAttributes) !== 'undefined') { %>
                         <div class="mt-3">

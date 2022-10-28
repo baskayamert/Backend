@@ -208,6 +208,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
         selectedSubSubCategory: selectedSubSubCategory,
         selectedSubCategory: selectedSubCategory,
         productWithChosenAttributes: productWithChosenAttributes,
+        user: req.session.user,
         url: req.url
       });
     }).catch(next)
@@ -259,6 +260,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
               selectedSubSubCategory: selectedSubSubCategory,
               selectedSubCategory: selectedSubCategory,
               productWithChosenAttributes: productWithChosenAttributes,
+              user: req.session.user,
               url: req.url
             });
           }).catch(next)

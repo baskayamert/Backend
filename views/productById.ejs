@@ -14,7 +14,28 @@
                     <div class="row">
                         <div class="col">
                             <div class="row mx-0"> 
-                                <button class="btn btn-outline-danger btn-sm" type="button" style="border-radius: 12px;">Buy Now</button>
+                                <form action="/payment" method="POST">
+                                    <script
+                                       src="//checkout.stripe.com/v2/checkout.js"
+                                       class="stripe-button"
+                                       data-key="<%= key %>"
+                                       data-amount="<%= selectedProduct[0].price * 100 %>"
+                                       data-currency="usd"
+                                       data-name="<%= selectedProduct[0].name %>"
+                                       data-address="Turkey"
+                                       data-description="<%= selectedProduct[0].primary_category_id %>"
+                                       data-locale="auto"
+                                       data-label="Buy Now"
+                                       >
+                                     </script>
+                                     <script>
+                                        // Hide default stripe button, be careful there if you
+                                        // have more than 1 button of that class
+                                        document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                                    </script>
+                                    <button class="btn btn-outline-danger btn-sm" type="submit" style="border-radius: 12px;">Buy Now</button>
+                                 </form>
+                                 
                                  <% if(user) { %>   
                                     <form action="/users/cart/addItem" method="POST">
                                         <input type="hidden" name="productId" value="<%= selectedProduct[0].id %>">

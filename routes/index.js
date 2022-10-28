@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const api = require('../api/index.js')
+const stripe = require('stripe')(process.env.Secret_Key)
 
 router.get('/', (req, res, next) => {
   res.redirect('/home')
@@ -209,6 +210,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
         selectedSubCategory: selectedSubCategory,
         productWithChosenAttributes: productWithChosenAttributes,
         user: req.session.user,
+        key: process.env.Publishable_Key,
         url: req.url
       });
     }).catch(next)
@@ -261,6 +263,7 @@ router.get('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCateg
               selectedSubCategory: selectedSubCategory,
               productWithChosenAttributes: productWithChosenAttributes,
               user: req.session.user,
+              key: process.env.Publishable_Key,
               url: req.url
             });
           }).catch(next)
@@ -278,5 +281,38 @@ router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCate
 
   res.redirect(`/category/${req.params.id}/subcategory/${req.params.subCategoryId}/subsubcategory/${req.params.subSubCategoryId}/product/${req.params.productId}`)
 });
+
+router.post('/payment', (req, res) =>{
+  console.log(req.body)
+  // Moreover you can take more details from user
+  // like Address, Name, etc from form
+  stripe.customers.create({
+      email: req.body.stripeEmail,
+      source: req.body.stripeToken,
+      name: req.body.stripeBillingName,
+      address: {
+          line1: req.body.stripeBillingAddressLine1,
+          postal_code: req.body.stripeBillingAddressZip,
+          city: req.body.stripeBillingAddressCity,
+          state: stripeBillingAddressState,
+          country: req.body.stripeBillingAddressCountry,
+      }
+  })
+  .then((customer) => {
+
+      return stripe.charges.create({
+          amount: 2500,     // Charging Rs 25
+          description: 'Web Development Product',
+          currency: 'USD',
+          customer: customer.id
+      });
+  })
+  .then((charge) => {
+      res.send("Success")  // If no error occurs
+  })
+  .catch((err) => {
+      res.send(err)       // If some error occurs
+  });
+})
 
 module.exports = router;

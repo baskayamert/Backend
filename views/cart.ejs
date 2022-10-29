@@ -3,11 +3,33 @@
 </div>
 
 <div class="container">
+
     <div class="card text-center" style="width: 18rem; position:absolute; right: 350px;">
         <div class="card-body">
           <h5 class="card-title">Your Cart Total:</h5>
           <p class="card-text"><%= totalCost.toFixed(2) %> $</p>
-          <a href="#" class="btn btn-outline-success" style="border-radius: 12px;">Buy Now</a>
+          <form action="/payment" method="POST">
+            <script
+               src="//checkout.stripe.com/v2/checkout.js"
+               class="stripe-button"
+               data-key="<%= key %>"
+               data-amount="<%= totalCost * 100%>"
+               data-currency="usd"
+               data-name="Shopping Cart Total"
+               data-address="Turkey"
+               data-description="Shopping Cart Total"
+               data-locale="auto"
+               data-label="Buy Now"
+               >
+             </script>
+             <script>
+                document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+            </script>
+            <input type="hidden" name="price" value="<%= totalCost * 100 %>">
+            <input type="hidden" name="description" value="Shopping Cart Total">
+            <input type="hidden" name="currency" value="<%= products[0].currency %>">
+            <button class="btn btn-outline-success" type="submit" style="border-radius: 12px;">Buy Now</button>
+         </form>
         </div>
     </div>
     <% for(product of products) { %>

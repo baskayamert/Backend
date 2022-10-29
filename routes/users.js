@@ -75,6 +75,7 @@ router.get('/cart', (req, res, next) => {
         cart: cart,
         products: productsWithDesiredAttributes,
         totalCost: totalCost,
+        key: process.env.Publishable_Key,
         url: req.url
       })
     })

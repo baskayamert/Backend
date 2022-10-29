@@ -19,7 +19,7 @@
                                        src="//checkout.stripe.com/v2/checkout.js"
                                        class="stripe-button"
                                        data-key="<%= key %>"
-                                       data-amount="<%= selectedProduct[0].price * 100 %>"
+                                       data-amount="<%= selectedProduct[0].price * 100%>"
                                        data-currency="usd"
                                        data-name="<%= selectedProduct[0].name %>"
                                        data-address="Turkey"
@@ -33,6 +33,9 @@
                                         // have more than 1 button of that class
                                         document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
                                     </script>
+                                    <input type="hidden" name="price" value="<%= selectedProduct[0].price * 100 %>">
+                                    <input type="hidden" name="description" value="<%= selectedProduct[0].name %>">
+                                    <input type="hidden" name="currency" value="<%= selectedProduct[0].currency %>">
                                     <button class="btn btn-outline-danger btn-sm" type="submit" style="border-radius: 12px;">Buy Now</button>
                                  </form>
                                  

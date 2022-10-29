@@ -284,8 +284,7 @@ router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCate
 
 router.post('/payment', (req, res) =>{
   console.log(req.body)
-  // Moreover you can take more details from user
-  // like Address, Name, etc from form
+
   stripe.customers.create({
       email: req.body.stripeEmail,
       source: req.body.stripeToken,
@@ -294,21 +293,20 @@ router.post('/payment', (req, res) =>{
           line1: req.body.stripeBillingAddressLine1,
           postal_code: req.body.stripeBillingAddressZip,
           city: req.body.stripeBillingAddressCity,
-          state: stripeBillingAddressState,
+          state: req.body.stripeBillingAddressState,
           country: req.body.stripeBillingAddressCountry,
       }
   })
   .then((customer) => {
-
       return stripe.charges.create({
-          amount: 2500,     // Charging Rs 25
-          description: 'Web Development Product',
-          currency: 'USD',
+          amount: req.body.price,     
+          description: req.body.description,
+          currency: req.body.currency,
           customer: customer.id
       });
   })
   .then((charge) => {
-      res.send("Success")  // If no error occurs
+    res.redirect(req.get('referer'))  // If no error occurs
   })
   .catch((err) => {
       res.send(err)       // If some error occurs

@@ -64,7 +64,7 @@
                         <div class="col-8 pr-0 my-auto">
                             <div class="row">
                                 <p class="col-8 card-text">
-                                    <%= product.short_description %>
+                                    <%- product.short_description %>
                                 </p>
                                 <div class="col card-text">
                                     <% for(let [key, value] of Object.entries(product.variant.variation_values)) { %>

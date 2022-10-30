@@ -51,6 +51,20 @@ router.get('/cart', (req, res, next) => {
       let productsWithDesiredAttributes = []
       for(product of products){
         for(item of cart.items){
+          /* const filterCorrectProductVariation = product[0].variants.filter((variant) => {
+            if(variant.product_id === item.variant.product_id) {
+              productsWithDesiredAttributes.push({
+                name: product[0].page_title,
+                page_title: product[0].page_title,
+                short_description: product[0].short_description,
+                image_groups: product[0].image_groups,
+                id: item.productId,
+                variant: item.variant,
+                currency: product[0].currency,
+                primary_category_id: product[0].primary_category_id,
+              })
+            }
+          }) */
           if(item.productId === product[0].id) {
             productsWithDesiredAttributes.push({
               name: product[0].page_title,
@@ -69,6 +83,7 @@ router.get('/cart', (req, res, next) => {
       for(product of productsWithDesiredAttributes){
         totalCost += product.variant.price
       }
+      console.log(productsWithDesiredAttributes)
       res.render('cart', {
         title: "The Shopping Cart",
         categories: categories,
@@ -78,7 +93,22 @@ router.get('/cart', (req, res, next) => {
         key: process.env.Publishable_Key,
         url: req.url
       })
+    }).catch((err) => {
+      console.log(err)
     })
+  }).catch((err) => {
+    if(err.response.status === 400){
+
+      if(req.get('referer') === "http://localhost:3000/users/cart"){
+        res.redirect('/home')
+      } else{
+        req.session.sessionFlash = {
+          type: 'alert alert-danger',
+          message: 'The cart does not exist!'
+        }
+        res.redirect(req.get('referer'))
+      } 
+    }
   })
 })
 

@@ -22,17 +22,26 @@
     
     <%- include('../signUp.ejs') %>
     <%- include('../signIn.ejs') %>
+    <%- include('../cartNotExistError.ejs') %>
 
     <!-- Optional JavaScript -->
     
-    <!-- If user cannot be found, the modal is reloaded again with a flash message -->
-    <% if(sessionFlash) { %>
+    <!-- If the user cannot be found, the modal is reloaded again with a flash message -->
+    <% if(sessionFlash && sessionFlash.message === 'User cannot be found!') { %>
       <script>
         $('#signin').modal({
           show: true
          })
       </script>
-    <% } %>               
+    <% } %> 
+    <!-- If the user haven't got anything in their cart, the cart doesn't exist and this throws this modal-->
+    <% if(sessionFlash && sessionFlash.message === 'The cart does not exist!') { %>
+      <script>
+        $('#cartNotExist').modal({
+          show: true
+         })
+      </script>
+    <% } %>             
    
   </body>
 </html>

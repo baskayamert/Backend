@@ -17,7 +17,6 @@ module.exports = {
             return undefined
         }
         
-        
     },
     getProductById: async (id) => {
         const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&id=${id}`)

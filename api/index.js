@@ -25,10 +25,19 @@ module.exports = {
     getCartItems: async (cartItems) => {
         let products = []
         for(item of cartItems){
-            const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&id=${item.productId}`)
-            products.push(response.data)
+            let doesProductExist = false
+            for(product of products){
+                if(product[0].id === item.productId){
+                    doesProductExist = true
+                    break;
+                }
+            }
+            if(!doesProductExist){
+                const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&id=${item.productId}`)
+                products.push(response.data)
+            }
+            
         }
-        
         return products
     },
     signUp: async (newUser) => {

@@ -50,22 +50,8 @@ router.get('/cart', (req, res, next) => {
     api.getCartItems(cart.items).then((products) =>{
       let productsWithDesiredAttributes = []
       for(product of products){
-        for(item of cart.items){
-          /* const filterCorrectProductVariation = product[0].variants.filter((variant) => {
-            if(variant.product_id === item.variant.product_id) {
-              productsWithDesiredAttributes.push({
-                name: product[0].page_title,
-                page_title: product[0].page_title,
-                short_description: product[0].short_description,
-                image_groups: product[0].image_groups,
-                id: item.productId,
-                variant: item.variant,
-                currency: product[0].currency,
-                primary_category_id: product[0].primary_category_id,
-              })
-            }
-          }) */
-          if(item.productId === product[0].id) {
+        cart.items.filter((item) => {
+          if(product[0].id === item.productId){
             productsWithDesiredAttributes.push({
               name: product[0].page_title,
               page_title: product[0].page_title,
@@ -77,13 +63,12 @@ router.get('/cart', (req, res, next) => {
               primary_category_id: product[0].primary_category_id,
             })
           }
-        }
+        })
       }
       let totalCost = 0
       for(product of productsWithDesiredAttributes){
         totalCost += product.variant.price
       }
-      console.log(productsWithDesiredAttributes)
       res.render('cart', {
         title: "The Shopping Cart",
         categories: categories,
@@ -122,7 +107,14 @@ router.post('/cart/addItem', (req, res, next) => {
   api.addItemToCart(jwt, product).then((product) => {
     res.redirect(req.get('referer'))
   }).catch((err) => {
-    console.log(err)
+    if(err.response.data.error === 'You must inform a valid Variant ID for this Product'){
+      req.session.sessionFlash = {
+        type: 'alert alert-danger',
+        message: 'Variant ID does not exist!'
+      }
+      
+    }
+    res.redirect(req.get('referer'))
   })
 })
 

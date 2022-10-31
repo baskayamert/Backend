@@ -23,6 +23,7 @@
     <%- include('../signUp.ejs') %>
     <%- include('../signIn.ejs') %>
     <%- include('../cartNotExistError.ejs') %>
+    <%- include('../variantNotExistError.ejs') %>
 
     <!-- Optional JavaScript -->
     
@@ -41,7 +42,15 @@
           show: true
          })
       </script>
-    <% } %>             
+    <% } %>    
+    <!-- If a product is wanted to add to cart and product with specified variants doesn't have an id in API-->
+    <% if(sessionFlash && sessionFlash.message === 'Variant ID does not exist!') { %>
+      <script>
+        $('#variantNotExist').modal({
+          show: true
+         })
+      </script>
+    <% } %>  
    
   </body>
 </html>

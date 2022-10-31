@@ -304,8 +304,21 @@ router.post('/payment', (req, res) =>{
       });
   })
   .then((charge) => {
-    console.log(charge)
-    res.redirect(req.get('referer'))  // If no error occurs
+    // If no error occurs
+    if(req.get('referer') === 'http://localhost:3000/users/cart'){
+      const jwt = "Bearer " + req.session.user.token
+      api.getCart(jwt).then((cart) => {
+        console.log(cart)
+        api.cleanCart(jwt, cart).then(() => {
+          res.redirect('/home') 
+        })  
+      }).catch((err) => {
+        console.log(err)
+      })
+    } else {
+      res.redirect(req.get('referer'))  
+    }
+    
   })
   .catch((err) => {
       res.send(err)       // If some error occurs

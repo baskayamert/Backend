@@ -78,6 +78,23 @@ module.exports = {
         
         const response = await axios(config)    
         return response.data   
+    },
+    cleanCart: async (jwt, cart) => {
+        const url = 'https://backend-academy-osf.herokuapp.com/api/cart/removeItem'
+        for(item of cart.items){ 
+            const product = {
+                secretKey: process.env.API_KEY,
+                productId: item.productId,
+                variantId: item.variant.product_id
+            }
+            const config = {
+                headers: { Authorization: jwt },
+                url,
+                method: 'DELETE',
+                data: product
+            }
+            await axios(config)
+        }
     }
     
 }

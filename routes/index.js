@@ -283,6 +283,7 @@ router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCate
 });
 
 router.post('/payment', (req, res) =>{
+  console.log(req.body)
   stripe.customers.create({
       email: req.body.stripeEmail,
       source: req.body.stripeToken,

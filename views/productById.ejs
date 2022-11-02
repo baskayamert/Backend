@@ -13,30 +13,39 @@
                     <p class="card-text"><%- selectedProduct[0].long_description %></p>
                     <div class="row">
                         <div class="col">
-                            <div class="row mx-0"> 
-                                <form action="/payment" method="POST">
-                                    <script
-                                       src="//checkout.stripe.com/v2/checkout.js"
-                                       class="stripe-button"
-                                       data-key="<%= key %>"
-                                       data-amount="<%= selectedProduct[0].price * 100%>"
-                                       data-currency="usd"
-                                       data-name="<%= selectedProduct[0].name %>"
-                                       data-address="Turkey"
-                                       data-description="<%= selectedProduct[0].primary_category_id %>"
-                                       data-locale="auto"
-                                       data-label="Buy Now"
-                                       >
-                                     </script>
-                                     <script>
-                                        document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
-                                    </script>
-                                    <input type="hidden" name="price" value="<%= selectedProduct[0].price * 100 %>">
-                                    <input type="hidden" name="description" value="<%= selectedProduct[0].name %>">
-                                    <input type="hidden" name="currency" value="<%= selectedProduct[0].currency %>">
-                                    <button class="btn btn-outline-danger btn-sm" type="submit" style="border-radius: 12px;">Buy Now</button>
-                                 </form>
-                                 
+                            <div class="row mx-0">
+                                <% if(typeof(productWithChosenAttributes) !== 'undefined' && productWithChosenAttributes.length > 0) { %>
+                                    <form action="/payment" method="POST">
+                                        <script
+                                        src="//checkout.stripe.com/v2/checkout.js"
+                                        class="stripe-button"
+                                        data-key="<%= key %>"
+                                        data-amount="<%= selectedProduct[0].price * 100%>"
+                                        data-currency="usd"
+                                        data-name="<%= selectedProduct[0].name %>"
+                                        data-address="Turkey"
+                                        data-description="<%= selectedProduct[0].primary_category_id %>"
+                                        data-locale="auto"
+                                        data-label="Buy Now"
+                                        >
+                                        </script>
+                                        <script>
+                                            document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                                        </script>
+                                        <input type="hidden" name="price" value="<%= selectedProduct[0].price * 100 %>">
+                                        <input type="hidden" name="description" value="<%= selectedProduct[0].name %>">
+                                        <input type="hidden" name="currency" value="<%= selectedProduct[0].currency %>">
+                                        <button class="btn btn-outline-danger btn-sm" type="submit" style="border-radius: 12px;">Buy Now</button>
+                                    </form>
+                                <% } else { %>
+                                    <%- include('variantNotExistError.ejs') %>
+                                    <script>
+                                        $('#variantNotExist').modal({
+                                          show: true
+                                         })
+                                      </script>
+                                <% } %>
+
                                  <% if(user) { %>   
                                     <form action="/users/cart/addItem" method="POST">
                                         <input type="hidden" name="productId" value="<%= selectedProduct[0].id %>">

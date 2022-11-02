@@ -95,6 +95,21 @@ module.exports = {
             }
             await axios(config)
         }
+    },
+    getAllProducts: async () => {
+        let page = 1
+        let totalProducts = []
+        while(true){
+            try{
+                const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&page=${page}`)
+                totalProducts.push(...response.data)
+                page++
+            }catch(err){
+                if(err.response.status === 400){ // All products were pulled from the API and when I cannot get more products it sends status 400
+                    break
+                }
+            }    
+        }
+        return totalProducts   
     }
-    
 }

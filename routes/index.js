@@ -326,4 +326,60 @@ router.post('/payment', (req, res) =>{
   });
 })
 
+router.get('/searchProducts', (req, res, next) => {
+  let categories = req.session.categories
+  
+  if(req.session.totalProducts){
+    let value = req.query.productName
+    let filteredProducts = req.session.totalProducts
+
+    if (value && value.trim().length > 0){
+        filteredProducts = []
+        value = value.trim().toLowerCase()
+
+        //returning only the results if the value of the search is included in the product's name
+        
+        req.session.totalProducts.filter(product => {
+          if(product.name.includes(value)){
+            filteredProducts.push(product)
+          }
+        })
+    }
+    res.render('searchedProducts', {
+      title: "OSF",
+      products: filteredProducts,
+      categories: categories,
+      url: req.url
+    })
+  }else {
+    api.getAllProducts().then((totalProducts) => {
+      req.session.totalProducts = totalProducts
+      let value = req.query.productName
+
+      let filteredProducts = totalProducts
+
+      if (value && value.trim().length > 0){
+          filteredProducts = []
+          value = value.trim().toLowerCase()
+  
+          //returning only the results if the value of the search is included in the product's name
+          totalProducts.filter(product => {
+            if(product.name.includes(value)){
+              filteredProducts.push(product)
+            }
+          })
+      }
+      res.render('searchedProducts', {
+        title: 'OSF',
+        products: filteredProducts,
+        categories: categories,
+        url: req.url
+      })
+    })
+  }
+  
+});
+
+
+
 module.exports = router;

@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row mb-5">
+
+        <% for(product of products){ %>
+                <div class="col-6">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <p class=" card-title"><h5 class=""><%= product.name %></h5></p>
+                            <div class="row">
+                                <div class="col-4">
+                                    <img class="card-img-bottom w-100 h-100" 
+                                    src="../../../../../../../images/<%= product.image_groups.filter(obj => obj.view_type === 'small')[0].images[0].link %>" 
+                                    alt="<%= product.image_groups.filter(obj => obj.view_type === 'small')[0].images[0].alt %>">
+                                </div>
+                                <div class="col-8">
+                                    <p class="card-text"><%- product.short_description %></p>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <p class="card-text">Price: $ <%= product.price.toFixed(2) %></p>
+                                        </div>
+                                        <div>
+                                            <form action="#" method="GET">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm h-100" style="border-radius: 12px;">More Info</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <% } %>
+    </div>

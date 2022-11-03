@@ -76,7 +76,14 @@
                             </div>
                             <!-- ColumnOfButtons -->
                             <div class="row mx-0">
-                                <div class="col"></div>
+                                <div class="col">
+                                    <form action="/users/cart/changeItemQuantity" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
+                                        <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Change Quantity</button>
+                                        <input type="number" name="quantity" value="<%= product.quantity %>" style="width:50px;" min="0">
+                                    </form>
+                                </div>
                                 <div class="col-2 text-right">
                                     <form action="/users/cart/product/<%= product.id %>" method="GET">
                                         <button type="submit" class="btn btn-outline-danger btn-sm h-100"

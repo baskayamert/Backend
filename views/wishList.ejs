@@ -48,8 +48,15 @@
                             </div>
                             <!-- ColumnOfButtons -->
                             <div class="row mx-0 mt-5">
-                         
-                                <div class="col-10 text-right">
+                                <div class="col-7">
+                                    <form action="/users/wishlist/changeItemQuantity" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
+                                        <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Change Quantity</button>
+                                        <input type="number" name="quantity" value="<%= product.quantity %>" style="width:50px;" min="0">
+                                    </form>
+                                </div>
+                                <div class="col-2 text-right">
                                     <form action="/payment" method="POST">
                                         <script
                                         src="//checkout.stripe.com/v2/checkout.js"
@@ -75,7 +82,7 @@
                                         <button class="btn btn-outline-danger btn-sm" type="submit" style="border-radius: 12px;">Buy Now</button>
                                     </form>
                                 </div>
-                                <div class="col-1 text-right">
+                                <div class="col-2 text-right">
                                     <form action="/users/wishlist/removeItem?_method=DELETE" method="POST">
                                         <input type="hidden" name="productId" value="<%= product.id %>">
                                         <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">

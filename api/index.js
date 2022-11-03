@@ -142,5 +142,23 @@ module.exports = {
         
         const response = await axios(config)    
         return response.data   
+    },
+    changeItemQuantityForCart: async (jwt, item) => {
+        let axiosRequest = axios.create({
+            headers: {
+                Authorization: jwt
+            }
+        })
+        const response = await axiosRequest.post(`https://backend-academy-osf.herokuapp.com/api/cart/changeItemQuantity`, item)
+        return response.data
+    },
+    changeItemQuantityForWishList: async (jwt, item) => {
+        let axiosRequest = axios.create({
+            headers: {
+                Authorization: jwt
+            }
+        })
+        const response = await axiosRequest.post(`https://backend-academy-osf.herokuapp.com/api/wishlist/changeItemQuantity`, item)
+        return response.data
     }
 }

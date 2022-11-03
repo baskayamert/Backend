@@ -269,4 +269,34 @@ router.get('/profile', (req, res, next) => {
   })
 })
 
+router.post('/cart/changeItemQuantity', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const item = {
+    secretKey: process.env.API_KEY,
+    productId: req.body.productId,
+    variantId: req.body.variantId,
+    quantity: req.body.quantity  
+  }
+  api.changeItemQuantityForCart(jwt, item).then((data) => {
+    res.redirect('/users/cart')
+  }).catch((err) => {
+    console.log(err)
+  })
+}) 
+
+router.post('/wishlist/changeItemQuantity', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const item = {
+    secretKey: process.env.API_KEY,
+    productId: req.body.productId,
+    variantId: req.body.variantId,
+    quantity: req.body.quantity  
+  }
+  api.changeItemQuantityForWishList(jwt, item).then((data) => {
+    res.redirect('/users/wishlist')
+  }).catch((err) => {
+    console.log(err)
+  })
+})
+
 module.exports = router;

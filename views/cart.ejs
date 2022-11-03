@@ -13,7 +13,7 @@
                src="//checkout.stripe.com/v2/checkout.js"
                class="stripe-button"
                data-key="<%= key %>"
-               data-amount="<%= totalCost * 100%>"
+               data-amount="<%= totalCost * product.quantity * 100%>"
                data-currency="usd"
                data-name="Shopping Cart Total"
                data-address="Turkey"
@@ -37,9 +37,9 @@
             <button type="button" class="col-12 btn btn-outline-dark" style="border-radius: 12px;">
                 <div class="row mt-2">
                     <h5 class="col text-left">
-                        <%= product.name %>
+                        <%= product.name + '(x' + product.quantity + ')' %>
                     </h5>
-                    <h5 class="col text-right">Price: <%= product.variant.price.toFixed(2) %>$</h5>
+                    <h5 class="col text-right">Price: <%= (product.variant.price * product.quantity).toFixed(2)  %>$</h5>
                 </div>
             </button>
         </div>

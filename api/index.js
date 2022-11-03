@@ -22,9 +22,9 @@ module.exports = {
         const response = await axios.get(`https://backend-academy-osf.herokuapp.com/api/products/product_search?secretKey=${process.env.API_KEY}&id=${id}`)
         return response.data 
     },
-    getCartItems: async (cartItems) => {
+    getItems: async (items) => {
         let products = []
-        for(item of cartItems){
+        for(item of items){
             let doesProductExist = false
             for(product of products){
                 if(product[0].id === item.productId){
@@ -131,7 +131,7 @@ module.exports = {
         const response = await axiosRequest.post(`https://backend-academy-osf.herokuapp.com/api/wishlist/addItem`, item)
         return response.data
     },
-    removeItemFromCart: async (jwt, item) => {
+    removeItemFromWishList: async (jwt, item) => {
         const url = 'https://backend-academy-osf.herokuapp.com/api/wishlist/removeItem'
         const config = {
           headers: { Authorization: jwt },

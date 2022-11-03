@@ -47,7 +47,7 @@ router.get('/wishlist', (req, res, next) => {
   const categories = req.session.categories
 
   api.getWishList(jwt).then((wishList) => {
-    api.getCartItems(wishList.items).then((products) =>{
+    api.getItems(wishList.items).then((products) =>{
       let productsWithDesiredAttributes = []
       for(product of products){
         wishList.items.filter((item) => {
@@ -61,6 +61,7 @@ router.get('/wishlist', (req, res, next) => {
               variant: item.variant,
               currency: product[0].currency,
               primary_category_id: product[0].primary_category_id,
+              quantity: item.quantity
             })
           }
         })
@@ -120,7 +121,7 @@ router.delete('/wishlist/removeItem', (req, res, next) => {
     productId: req.body.productId,
     variantId: req.body.variantId  
   }
-  api.removeItemFromCart(jwt, item).then((item) => {
+  api.removeItemFromWishList(jwt, item).then((item) => {
     res.redirect('/users/wishlist')
   }).catch((err) => {
     console.log(err)
@@ -132,7 +133,7 @@ router.get('/cart', (req, res, next) => {
   const categories = req.session.categories
 
   api.getCart(jwt).then((cart) => {
-    api.getCartItems(cart.items).then((products) =>{
+    api.getItems(cart.items).then((products) =>{
       let productsWithDesiredAttributes = []
       for(product of products){
         cart.items.filter((item) => {
@@ -146,13 +147,14 @@ router.get('/cart', (req, res, next) => {
               variant: item.variant,
               currency: product[0].currency,
               primary_category_id: product[0].primary_category_id,
+              quantity: item.quantity
             })
           }
         })
       }
       let totalCost = 0
       for(product of productsWithDesiredAttributes){
-        totalCost += product.variant.price
+        totalCost += product.variant.price * product.quantity
       }
       res.render('cart', {
         title: "The Shopping Cart",

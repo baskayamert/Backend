@@ -9,9 +9,9 @@
         <button type="button" class="col-12 btn btn-outline-dark" style="border-radius: 12px;">
             <div class="row mt-2">
                 <h5 class="col text-left">
-                    <%= product.name %>
+                    <%= product.name + '(x' + product.quantity + ')' %>
                 </h5>
-                <h5 class="col text-right">Price: <%= product.variant.price.toFixed(2) %>$</h5>
+                <h5 class="col text-right">Price: <%= (product.variant.price * product.quantity).toFixed(2) %>$</h5>
             </div>
         </button>
 
@@ -55,7 +55,7 @@
                                         src="//checkout.stripe.com/v2/checkout.js"
                                         class="stripe-button"
                                         data-key="<%= key %>"
-                                        data-amount="<%= product.variant.price * 100%>"
+                                        data-amount="<%= product.variant.price * product.quantity * 100%>"
                                         data-currency="usd"
                                         data-name="<%= product.name %>"
                                         data-address="Turkey"
@@ -76,7 +76,7 @@
                                     </form>
                                 </div>
                                 <div class="col-1 text-right">
-                                    <form action="/users/cart/removeItem?_method=DELETE" method="POST">
+                                    <form action="/users/wishlist/removeItem?_method=DELETE" method="POST">
                                         <input type="hidden" name="productId" value="<%= product.id %>">
                                         <input type="hidden" name="variantId" value="<%= product.variant.product_id %>">
                                         <input type="hidden" name="_method" value="DELETE">

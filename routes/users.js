@@ -80,7 +80,7 @@ router.get('/wishlist', (req, res, next) => {
   }).catch((err) => {
     if(err.response.status === 400){
 
-      if(req.get('referer') === "http://localhost:3000/users/wishlist"){
+      if(req.get('referer').includes("/users/wishlist")){
         res.redirect('/home')
       } else{
         req.session.sessionFlash = {
@@ -171,7 +171,7 @@ router.get('/cart', (req, res, next) => {
   }).catch((err) => {
     if(err.response.status === 400){
 
-      if(req.get('referer') === "http://localhost:3000/users/cart"){
+      if(req.get('referer').includes("/users/cart")){
         res.redirect('/home')
       } else{
         req.session.sessionFlash = {

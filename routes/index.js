@@ -305,7 +305,7 @@ router.post('/payment', (req, res) =>{
   })
   .then((charge) => {
     // If no error occurs
-    if(req.get('referer') === 'http://localhost:3000/users/cart'){
+    if(req.get('referer').includes('/users/cart')){
       const jwt = "Bearer " + req.session.user.token
       api.getCart(jwt).then((cart) => {
         api.cleanCart(jwt, cart).then(() => {
@@ -314,7 +314,7 @@ router.post('/payment', (req, res) =>{
       }).catch((err) => {
         console.log(err)
       })
-    } else if(req.get('referer') === 'http://localhost:3000/users/wishlist') {
+    } else if(req.get('referer').includes('/users/wishlist')) {
       const jwt = "Bearer " + req.session.user.token
       const item = {
         secretKey: process.env.API_KEY,

@@ -345,12 +345,14 @@ router.get('/searchProducts', (req, res, next) => {
 
     if (value && value.trim().length > 0){
         filteredProducts = []
+        console.log(value)
         value = value.trim().toLowerCase()
+        console.log(value)
 
         //returning only the results if the value of the search is included in the product's name
         
         req.session.totalProducts.filter(product => {
-          if(product.name.includes(value)){
+          if(product.name.toLowerCase().includes(value)){
             filteredProducts.push(product)
           }
         })
@@ -366,16 +368,17 @@ router.get('/searchProducts', (req, res, next) => {
     api.getAllProducts().then((totalProducts) => {
       req.session.totalProducts = totalProducts
       let value = req.query.productName
-
       let filteredProducts = totalProducts
 
       if (value && value.trim().length > 0){
           filteredProducts = []
+          console.log(value)
           value = value.trim().toLowerCase()
+          console.log(value)
   
           //returning only the results if the value of the search is included in the product's name
           totalProducts.filter(product => {
-            if(product.name.includes(value)){
+            if(product.name.toLowerCase().includes(value)){
               filteredProducts.push(product)
             }
           })

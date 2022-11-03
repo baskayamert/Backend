@@ -1,33 +1,49 @@
 <div class="container">
-    <div class="row mb-5">
-
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="row">
+                <p class="col-1">Image</p>
+                <p class="col">Name</p>
+                <p class="col">Type</p>
+                <% if(user) { %>
+                    <p class="col">Cart</p>
+                    <p class="col">Wish</p>
+                <% } %>
+            </div>
+        </li>
+    
         <% for(product of products){ %>
-                <div class="col-6">
-                    <div class="card border-0">
-                        <div class="card-body">
-                            <p class=" card-title"><h5 class=""><%= product.name %></h5></p>
-                            <div class="row">
-                                <div class="col-4">
-                                    <img class="card-img-bottom w-100 h-100" 
-                                    src="../../../../../../../images/<%= product.image_groups.filter(obj => obj.view_type === 'small')[0].images[0].link %>" 
-                                    alt="<%= product.image_groups.filter(obj => obj.view_type === 'small')[0].images[0].alt %>">
-                                </div>
-                                <div class="col-8">
-                                    <p class="card-text"><%- product.short_description %></p>
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <p class="card-text">Price: $ <%= product.price.toFixed(2) %></p>
-                                        </div>
-                                        <div>
-                                            <form action="#" method="GET">
-                                                <button type="submit" class="btn btn-outline-danger btn-sm h-100" style="border-radius: 12px;">More Info</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+     
+            <li class="list-group-item">
+                <div class="row">
+                    <img class="col-1 card-img-bottom"
+                    style="width: 100px ;" 
+                    src="../../../../../../../images/<%= product.image_groups.filter(obj => obj.view_type === 'small')[0].images[0].link %>" 
+                    alt="<%= product.image_groups.filter(obj => obj.view_type === 'large')[0].images[0].alt %>">
+                    <p class="col"><%= product.name %></p>
+                    <p class="col"><%= product.primary_category_id %></p>
+                    <% if(user) { %>  
+                        <div class="col">
+                            <form action="/users/cart/addItem" method="POST">
+                                <input type="hidden" name="productId" value="<%= product.id %>">
+                                <input type="hidden" name="variantId" value="<%= product.variants.length > 0 ? product.variants[0].product_id : 0 %>">
+                                <input type="hidden" name="quantity" value="1"> 
+                                <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Add to Cart</button>
+                            </form>
+                        </div> 
+                        <div class="col">
+                            <form action="/users/wishlist/addItem" method="POST">
+                                <input type="hidden" name="productId" value="<%= product.id %>">
+                                <input type="hidden" name="variantId" value="<%= product.variants.length > 0 ? product.variants[0].product_id : 0 %>">
+                                <input type="hidden" name="quantity" value="1"> 
+                                <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Add to Wish List</button>
+                            </form>
+                        </div> 
+                    <% } %>
                 </div>
+
+            </li>
+        
         <% } %>
-    </div>
+    </ul>
+</div>

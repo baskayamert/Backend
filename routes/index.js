@@ -283,7 +283,6 @@ router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCate
 });
 
 router.post('/payment', (req, res) =>{
-  console.log(req.body)
   stripe.customers.create({
       email: req.body.stripeEmail,
       source: req.body.stripeToken,
@@ -309,10 +308,21 @@ router.post('/payment', (req, res) =>{
     if(req.get('referer') === 'http://localhost:3000/users/cart'){
       const jwt = "Bearer " + req.session.user.token
       api.getCart(jwt).then((cart) => {
-        console.log(cart)
         api.cleanCart(jwt, cart).then(() => {
           res.redirect('/home') 
         })  
+      }).catch((err) => {
+        console.log(err)
+      })
+    } else if(req.get('referer') === 'http://localhost:3000/users/wishlist') {
+      const jwt = "Bearer " + req.session.user.token
+      const item = {
+        secretKey: process.env.API_KEY,
+        productId: req.body.productId,
+        variantId: req.body.variantId  
+      }
+      api.removeItemFromCart(jwt, item).then((item) => {  
+        res.redirect('/users/wishlist')
       }).catch((err) => {
         console.log(err)
       })
@@ -349,7 +359,8 @@ router.get('/searchProducts', (req, res, next) => {
       title: "OSF",
       products: filteredProducts,
       categories: categories,
-      url: req.url
+      url: req.url,
+      user: req.session.user
     })
   }else {
     api.getAllProducts().then((totalProducts) => {
@@ -373,7 +384,8 @@ router.get('/searchProducts', (req, res, next) => {
         title: 'OSF',
         products: filteredProducts,
         categories: categories,
-        url: req.url
+        url: req.url,
+        user: req.session.user
       })
     })
   }

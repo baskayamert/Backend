@@ -111,5 +111,36 @@ module.exports = {
             }    
         }
         return totalProducts   
+    },
+    getWishList: async (jwt) => {
+        let axiosRequest = axios.create({
+            headers: {
+                Authorization: jwt
+            }
+        })
+        const response = await axiosRequest.get(`https://backend-academy-osf.herokuapp.com/api/wishlist?secretKey=${process.env.API_KEY}`)
+
+        return response.data
+    },
+    addItemToWishList: async (jwt, item) => {
+        let axiosRequest = axios.create({
+            headers: {
+                Authorization: jwt
+            }
+        })
+        const response = await axiosRequest.post(`https://backend-academy-osf.herokuapp.com/api/wishlist/addItem`, item)
+        return response.data
+    },
+    removeItemFromCart: async (jwt, item) => {
+        const url = 'https://backend-academy-osf.herokuapp.com/api/wishlist/removeItem'
+        const config = {
+          headers: { Authorization: jwt },
+          url,
+          method: 'DELETE',
+          data: item
+        }
+        
+        const response = await axios(config)    
+        return response.data   
     }
 }

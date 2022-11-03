@@ -24,6 +24,7 @@
     <%- include('../signUp.ejs') %>
     <%- include('../signIn.ejs') %>
     <%- include('../cartNotExistError.ejs') %>
+    <%- include('../wishListNotExist.ejs') %>
     <%- include('../variantNotExistError.ejs') %>
 
     <!-- Optional JavaScript -->
@@ -43,7 +44,15 @@
           show: true
          })
       </script>
-    <% } %>    
+    <% } %> 
+    <!-- If the user haven't got anything in their wish list, the wish list doesn't exist and this throws this modal-->
+    <% if(sessionFlash && sessionFlash.message === 'The wish list does not exist!') { %>
+      <script>
+        $('#wishListNotExist').modal({
+          show: true
+         })
+      </script>
+    <% } %>   
     <!-- If a product is wanted to add to cart and product with specified variants doesn't have an id in API-->
     <% if(sessionFlash && sessionFlash.message === 'Variant ID does not exist!') { %>
       <script>

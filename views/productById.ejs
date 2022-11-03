@@ -53,6 +53,12 @@
                                         <input type="hidden" name="quantity" value="1"> 
                                         <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Add to Cart</button>
                                     </form>
+                                    <form class="mt-2 ml-2" action="/users/wishlist/addItem" method="POST">
+                                        <input type="hidden" name="productId" value="<%= selectedProduct[0].id %>">
+                                        <input type="hidden" name="variantId" value="<%= (typeof(productWithChosenAttributes) !== 'undefined' && productWithChosenAttributes.length > 0)  ? productWithChosenAttributes[0].product_id : 0 %>">
+                                        <input type="hidden" name="quantity" value="1"> 
+                                        <button class="btn btn-outline-danger btn-sm mx-1" type="submit" style="border-radius: 12px;">Add to Wish List</button>
+                                    </form>
                                 <% } %>
                             </div>
                         </div>

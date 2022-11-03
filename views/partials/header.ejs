@@ -26,6 +26,7 @@
                 <% if(!displayLogButtons) { %>
 
                     <a href="/users/cart"><img style="margin-left:100px; width: 30px;" src="/images/shoppingCart.svg" alt="Shopping Cart" style="width: 30px; height:30px;"></a>
+                    <a href="/users/wishlist"><img style="margin-left:100px; width: 30px;" src="/images/wishList.jpg" alt="Wish List" style="width: 30px; height:30px;"></a>
 
                     <form action="/users/logout" method="GET">
                         <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;">Log Out</button>
@@ -44,7 +45,7 @@
      <br>
      <br>
 
-    <% if(!url.includes("cart")) { %>
+    <% if(!url.includes("cart") && !url.includes("wishlist")) { %>
     <nav aria-label="breadcrumb">
         <div class="container pl-0 pt-2">
             <ol class="breadcrumb bg-light">

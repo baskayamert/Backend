@@ -42,6 +42,91 @@ router.get('/logout', (req, res, next) => {
   res.redirect('/home')
 })
 
+router.get('/wishlist', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const categories = req.session.categories
+
+  api.getWishList(jwt).then((wishList) => {
+    api.getCartItems(wishList.items).then((products) =>{
+      let productsWithDesiredAttributes = []
+      for(product of products){
+        wishList.items.filter((item) => {
+          if(product[0].id === item.productId){
+            productsWithDesiredAttributes.push({
+              name: product[0].page_title,
+              page_title: product[0].page_title,
+              short_description: product[0].short_description,
+              image_groups: product[0].image_groups,
+              id: item.productId,
+              variant: item.variant,
+              currency: product[0].currency,
+              primary_category_id: product[0].primary_category_id,
+            })
+          }
+        })
+      }
+      res.render('wishList', {
+        title: "The Wish List",
+        categories: categories,
+        wishList: wishList,
+        products: productsWithDesiredAttributes,
+        key: process.env.Publishable_Key,
+        url: req.url
+      })
+    }).catch((err) => {
+      console.log(err)
+    })
+  }).catch((err) => {
+    if(err.response.status === 400){
+
+      if(req.get('referer') === "http://localhost:3000/users/wishlist"){
+        res.redirect('/home')
+      } else{
+        req.session.sessionFlash = {
+          type: 'alert alert-danger',
+          message: 'The wish list does not exist!'
+        }
+        res.redirect(req.get('referer'))
+      } 
+    }
+  })
+})
+
+router.post('/wishlist/addItem', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const item = {
+    secretKey: process.env.API_KEY,
+    ...req.body
+  }
+  api.addItemToWishList(jwt, item).then((product) => {
+    res.redirect(req.get('referer'))
+  }).catch((err) => {
+    if(err.response.data.error === 'You must inform a valid Variant ID for this Product'){
+      req.session.sessionFlash = {
+        type: 'alert alert-danger',
+        message: 'Variant ID does not exist!'
+      }
+      
+    }
+    console.log(err)
+    res.redirect(req.get('referer'))
+  })
+})
+
+router.delete('/wishlist/removeItem', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const item = {
+    secretKey: process.env.API_KEY,
+    productId: req.body.productId,
+    variantId: req.body.variantId  
+  }
+  api.removeItemFromCart(jwt, item).then((item) => {
+    res.redirect('/users/wishlist')
+  }).catch((err) => {
+    console.log(err)
+  })
+})
+
 router.get('/cart', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
   const categories = req.session.categories
@@ -99,7 +184,6 @@ router.get('/cart', (req, res, next) => {
 
 router.post('/cart/addItem', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
-  console.log(req.body)
   const product = {
     secretKey: process.env.API_KEY,
     ...req.body

@@ -6,6 +6,10 @@
     "start": "node ./bin/www",
     "test": "mocha"
   },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
   "dependencies": {
     "@sentry/node": "^7.15.0",
     "@sentry/tracing": "^7.15.0",
@@ -26,5 +30,6 @@
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "mocha": "^10.1.0"
-  }
+  },
+  "author": "mert-baskaya"
 }

@@ -9,27 +9,28 @@
             
             <div class="row justify-content-end mr-0">
                 <% if(displayLogButtons) { %>
-                    <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;" data-toggle="modal" data-target="#signup">Sign Up</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;" data-toggle="modal" data-target="#signin">Sign In</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left:80px; width: 100px; border-radius: 12px;" data-toggle="modal" data-target="#signup">Sign Up</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left:80px; width: 100px; border-radius: 12px;" data-toggle="modal" data-target="#signin">Sign In</button>
                 <% } %>
             
                 <% for(category of categories) { %>    
                     <form action="/category/<%= category.id %>" method="GET">
                         <% if(typeof(selectedCategory) !== 'undefined' && selectedCategory.id === category.id) { %>  
-                            <button type="submit" class="btn btn-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;"><%= category.name %></button>
+                            <button type="submit" class="btn btn-danger btn-sm" style="margin-left:80px; width: 100px; border-radius: 12px;"><%= category.name %></button>
                         <% } else { %>
-                            <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;"><%= category.name %></button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:80px; width: 100px; border-radius: 12px;"><%= category.name %></button>
                         <% } %>
                     </form>
                 <% } %>
                 
                 <% if(!displayLogButtons) { %>
 
-                    <a href="/users/cart"><img style="margin-left:100px; width: 30px;" src="/images/shoppingCart.svg" alt="Shopping Cart" style="width: 30px; height:30px;"></a>
-                    <a href="/users/wishlist"><img style="margin-left:100px; width: 30px;" src="/images/wishList.jpg" alt="Wish List" style="width: 30px; height:30px;"></a>
+                    <a href="/users/cart"><img style="margin-left:80px; width: 30px;" src="/images/shoppingCart.svg" alt="Shopping Cart" style="width: 30px; height:30px;"></a>
+                    <a href="/users/wishlist"><img style="margin-left:80px; width: 30px;" src="/images/wishList.jpg" alt="Wish List" style="width: 30px; height:30px;"></a>
+                    <a href="/users/profile"><img style="margin-left:80px; width: 30px;" src="/images/profileIcon.png" alt="Wish List" style="width: 30px; height:30px;"></a>
 
                     <form action="/users/logout" method="GET">
-                        <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:100px; width: 100px; border-radius: 12px;">Log Out</button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm" style="margin-left:80px; width: 100px; border-radius: 12px;">Log Out</button>
                     </form>  
 
                     

@@ -257,4 +257,14 @@ router.post('/cart/product/:productId', (req, res, next) => {
   res.redirect(`/users/cart/product/${req.params.productId}`)
 });
 
+router.get('/profile', (req, res, next) => {
+  let categories = req.session.categories
+  res.render('profile', {
+    title: "Profile",
+    categories: categories,
+    url: req.url,
+    user: req.session.user
+  })
+})
+
 module.exports = router;

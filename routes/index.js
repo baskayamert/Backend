@@ -387,7 +387,4 @@ router.get('/searchProducts', (req, res, next) => {
   }
   
 });
-
-
-
 module.exports = router;

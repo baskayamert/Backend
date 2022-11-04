@@ -23,10 +23,8 @@ router.post('/signin', (req, res, next) => {
   }
   api.signIn(userInfo).then((user) => {
     req.session.user = user
-    res.redirect('home')
-    //res.redirect(req.get('referer'))
+    res.redirect(req.get('referer'))
   }).catch((err) => {
-    console.log(err)
     if(err.response.status === 400){
       req.session.sessionFlash = {
         type: 'alert alert-danger',

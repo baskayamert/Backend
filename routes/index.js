@@ -308,7 +308,7 @@ router.post('/payment', (req, res) =>{
     if(req.get('referer').includes('/users/cart')){
       const jwt = "Bearer " + req.session.user.token
       api.getCart(jwt).then((cart) => {
-        api.cleanCart(jwt, cart).then(() => {
+        api.cleanCart(jwt, cart).then(() => { 
           res.redirect('/home') 
         })  
       }).catch((err) => {
@@ -321,7 +321,7 @@ router.post('/payment', (req, res) =>{
         productId: req.body.productId,
         variantId: req.body.variantId  
       }
-      api.removeItemFromWishList(jwt, item).then((item) => {  
+      api.removeItemFromWishList(jwt, item).then((item) => { 
         res.redirect('/users/wishlist')
       }).catch((err) => {
         console.log(err)
@@ -329,7 +329,6 @@ router.post('/payment', (req, res) =>{
     } else {
       res.redirect(req.get('referer'))  
     }
-    
   })
   .catch((err) => {
       res.send(err)       // If some error occurs

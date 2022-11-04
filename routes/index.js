@@ -13,7 +13,7 @@ router.get('/home', (req, res, next) => {
     res.render('index', { title: 'OSF', categories: categories, url: req.url });
   }).catch(next)
 });
-
+//CATEGORY
 router.get('/category/:id', (req, res, next) => {
   api.getCategoriesByParentId("root").then((categories) => {
     let selectedCategory;
@@ -281,7 +281,7 @@ router.post('/category/:id/subcategory/:subCategoryId/subsubcategory/:subSubCate
 
   res.redirect(`/category/${req.params.id}/subcategory/${req.params.subCategoryId}/subsubcategory/${req.params.subSubCategoryId}/product/${req.params.productId}`)
 });
-
+// PAYMENT
 router.post('/payment', (req, res) =>{
   stripe.customers.create({
       email: req.body.stripeEmail,
@@ -312,7 +312,6 @@ router.post('/payment', (req, res) =>{
           res.redirect('/home') 
         })  
       }).catch((err) => {
-        console.log(err)
       })
     } else if(req.get('referer').includes('/users/wishlist')) {
       const jwt = "Bearer " + req.session.user.token
@@ -324,7 +323,6 @@ router.post('/payment', (req, res) =>{
       api.removeItemFromWishList(jwt, item).then((item) => { 
         res.redirect('/users/wishlist')
       }).catch((err) => {
-        console.log(err)
       })
     } else {
       res.redirect(req.get('referer'))  
@@ -334,7 +332,7 @@ router.post('/payment', (req, res) =>{
       res.send(err)       // If some error occurs
   });
 })
-
+// SEARCHBAR
 router.get('/searchProducts', (req, res, next) => {
   let categories = req.session.categories
   

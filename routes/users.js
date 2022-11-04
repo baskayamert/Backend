@@ -1,9 +1,8 @@
-const { render } = require('ejs');
 const express = require('express');
 const router = express.Router();
 const api = require('../api/index.js');
 
-/* GET users listing. */
+// Authorization
 router.post('/signup', (req, res, next) => {
   const newUser = {
     secretKey: process.env.API_KEY,
@@ -12,7 +11,6 @@ router.post('/signup', (req, res, next) => {
   api.signUp(newUser).then((data) => {
     res.redirect('/home')
   }).catch((err) => {
-    console.log(err)
   })
 })
 
@@ -40,92 +38,17 @@ router.get('/logout', (req, res, next) => {
   delete req.session.user
   res.redirect('/home')
 })
-
-router.get('/wishlist', (req, res, next) => {
-  const jwt = "Bearer " + req.session.user.token
-  const categories = req.session.categories
-
-  api.getWishList(jwt).then((wishList) => {
-    api.getItems(wishList.items).then((products) =>{
-      let productsWithDesiredAttributes = []
-      for(product of products){
-        wishList.items.filter((item) => {
-          if(product[0].id === item.productId){
-            productsWithDesiredAttributes.push({
-              name: product[0].page_title,
-              page_title: product[0].page_title,
-              short_description: product[0].short_description,
-              image_groups: product[0].image_groups,
-              id: item.productId,
-              variant: item.variant,
-              currency: product[0].currency,
-              primary_category_id: product[0].primary_category_id,
-              quantity: item.quantity
-            })
-          }
-        })
-      }
-      res.render('wishList', {
-        title: "The Wish List",
-        categories: categories,
-        wishList: wishList,
-        products: productsWithDesiredAttributes,
-        key: process.env.Publishable_Key,
-        url: req.url
-      })
-    }).catch((err) => {
-      console.log(err)
-    })
-  }).catch((err) => {
-    if(err.response.status === 400){
-
-      if(req.get('referer').includes("/users/wishlist")){
-        res.redirect('/home')
-      } else{
-        req.session.sessionFlash = {
-          type: 'alert alert-danger',
-          message: 'The wish list does not exist!'
-        }
-        res.redirect(req.get('referer'))
-      } 
-    }
+//PROFILE
+router.get('/profile', (req, res, next) => {
+  let categories = req.session.categories
+  res.render('profile', {
+    title: "Profile",
+    categories: categories,
+    url: req.url,
+    user: req.session.user
   })
 })
-
-router.post('/wishlist/addItem', (req, res, next) => {
-  const jwt = "Bearer " + req.session.user.token
-  const item = {
-    secretKey: process.env.API_KEY,
-    ...req.body
-  }
-  api.addItemToWishList(jwt, item).then((product) => {
-    res.redirect(req.get('referer'))
-  }).catch((err) => {
-    if(err.response.data.error === 'You must inform a valid Variant ID for this Product'){
-      req.session.sessionFlash = {
-        type: 'alert alert-danger',
-        message: 'Variant ID does not exist!'
-      }
-      
-    }
-    console.log(err)
-    res.redirect(req.get('referer'))
-  })
-})
-
-router.delete('/wishlist/removeItem', (req, res, next) => {
-  const jwt = "Bearer " + req.session.user.token
-  const item = {
-    secretKey: process.env.API_KEY,
-    productId: req.body.productId,
-    variantId: req.body.variantId  
-  }
-  api.removeItemFromWishList(jwt, item).then((item) => {
-    res.redirect('/users/wishlist')
-  }).catch((err) => {
-    console.log(err)
-  })
-})
+// CART
 
 router.get('/cart', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
@@ -165,7 +88,6 @@ router.get('/cart', (req, res, next) => {
         url: req.url
       })
     }).catch((err) => {
-      console.log(err)
     })
   }).catch((err) => {
     if(err.response.status === 400){
@@ -213,7 +135,20 @@ router.delete('/cart/removeItem', (req, res, next) => {
   api.removeItemFromCart(jwt, product).then((product) => {
     res.redirect('/users/cart')
   }).catch((err) => {
-    console.log(err)
+  })
+})
+
+router.post('/cart/changeItemQuantity', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const item = {
+    secretKey: process.env.API_KEY,
+    productId: req.body.productId,
+    variantId: req.body.variantId,
+    quantity: req.body.quantity  
+  }
+  api.changeItemQuantityForCart(jwt, item).then((data) => {
+    res.redirect('/users/cart')
+  }).catch((err) => {
   })
 })
 
@@ -247,9 +182,9 @@ router.get('/cart/product/:productId', (req, res, next) => {
       url: req.url
     })
   }).catch((err) => {
-    console.log(err)
   })
 })
+
 router.post('/cart/product/:productId', (req, res, next) => {
   req.session.selectedProductVariants = {
     ...req.session.selectedProductVariants,
@@ -258,30 +193,89 @@ router.post('/cart/product/:productId', (req, res, next) => {
   res.redirect(`/users/cart/product/${req.params.productId}`)
 });
 
-router.get('/profile', (req, res, next) => {
-  let categories = req.session.categories
-  res.render('profile', {
-    title: "Profile",
-    categories: categories,
-    url: req.url,
-    user: req.session.user
+// WISH LIST
+router.get('/wishlist', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const categories = req.session.categories
+
+  api.getWishList(jwt).then((wishList) => {
+    api.getItems(wishList.items).then((products) =>{
+      let productsWithDesiredAttributes = []
+      for(product of products){
+        wishList.items.filter((item) => {
+          if(product[0].id === item.productId){
+            productsWithDesiredAttributes.push({
+              name: product[0].page_title,
+              page_title: product[0].page_title,
+              short_description: product[0].short_description,
+              image_groups: product[0].image_groups,
+              id: item.productId,
+              variant: item.variant,
+              currency: product[0].currency,
+              primary_category_id: product[0].primary_category_id,
+              quantity: item.quantity
+            })
+          }
+        })
+      }
+      res.render('wishList', {
+        title: "The Wish List",
+        categories: categories,
+        wishList: wishList,
+        products: productsWithDesiredAttributes,
+        key: process.env.Publishable_Key,
+        url: req.url
+      })
+    }).catch((err) => {
+    })
+  }).catch((err) => {
+    if(err.response.status === 400){
+
+      if(req.get('referer').includes("/users/wishlist")){
+        res.redirect('/home')
+      } else{
+        req.session.sessionFlash = {
+          type: 'alert alert-danger',
+          message: 'The wish list does not exist!'
+        }
+        res.redirect(req.get('referer'))
+      } 
+    }
   })
 })
 
-router.post('/cart/changeItemQuantity', (req, res, next) => {
+router.post('/wishlist/addItem', (req, res, next) => {
+  const jwt = "Bearer " + req.session.user.token
+  const item = {
+    secretKey: process.env.API_KEY,
+    ...req.body
+  }
+  api.addItemToWishList(jwt, item).then((product) => {
+    res.redirect(req.get('referer'))
+  }).catch((err) => {
+    if(err.response.data.error === 'You must inform a valid Variant ID for this Product'){
+      req.session.sessionFlash = {
+        type: 'alert alert-danger',
+        message: 'Variant ID does not exist!'
+      }
+      
+    }
+    res.redirect(req.get('referer'))
+  })
+})
+
+router.delete('/wishlist/removeItem', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
   const item = {
     secretKey: process.env.API_KEY,
     productId: req.body.productId,
-    variantId: req.body.variantId,
-    quantity: req.body.quantity  
+    variantId: req.body.variantId  
   }
-  api.changeItemQuantityForCart(jwt, item).then((data) => {
-    res.redirect('/users/cart')
+  api.removeItemFromWishList(jwt, item).then((item) => {
+    res.redirect('/users/wishlist')
   }).catch((err) => {
-    console.log(err)
   })
-}) 
+})
 
 router.post('/wishlist/changeItemQuantity', (req, res, next) => {
   const jwt = "Bearer " + req.session.user.token
@@ -294,8 +288,8 @@ router.post('/wishlist/changeItemQuantity', (req, res, next) => {
   api.changeItemQuantityForWishList(jwt, item).then((data) => {
     res.redirect('/users/wishlist')
   }).catch((err) => {
-    console.log(err)
   })
 })
+
 
 module.exports = router;

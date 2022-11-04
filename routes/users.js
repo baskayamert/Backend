@@ -23,7 +23,8 @@ router.post('/signin', (req, res, next) => {
   }
   api.signIn(userInfo).then((user) => {
     req.session.user = user
-    res.redirect(req.get('referer'))
+    res.redirect('home')
+    //res.redirect(req.get('referer'))
   }).catch((err) => {
     console.log(err)
     if(err.response.status === 400){

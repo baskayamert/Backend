@@ -345,9 +345,7 @@ router.get('/searchProducts', (req, res, next) => {
 
     if (value && value.trim().length > 0){
         filteredProducts = []
-        console.log(value)
         value = value.trim().toLowerCase()
-        console.log(value)
 
         //returning only the results if the value of the search is included in the product's name
         
@@ -372,9 +370,7 @@ router.get('/searchProducts', (req, res, next) => {
 
       if (value && value.trim().length > 0){
           filteredProducts = []
-          console.log(value)
           value = value.trim().toLowerCase()
-          console.log(value)
   
           //returning only the results if the value of the search is included in the product's name
           totalProducts.filter(product => {
